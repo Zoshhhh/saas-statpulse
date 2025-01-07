@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "chart.js": "^4.4.7"
+    "chart.js": "^4.4.7",
+    "lucide": "^0.469.0"
   }
 }
