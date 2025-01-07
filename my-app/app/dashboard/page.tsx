@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { RefreshCw, Edit2, Save, X, Plus, Search, Twitter, Activity, Users, DollarSign, ShoppingCart, Trash2, Palette, Layout, FlagIcon as BorderAll, ImagesIcon as Icons, Sparkles, Layers } from 'lucide-react';
+import { RefreshCw, Edit2, Save, X, Plus, Search, Twitter, Activity, Users, DollarSign, ShoppingCart, Trash2, Palette, Layout, FlagIcon as BorderAll, ImagesIcon as Icons, Sparkles, Layers, AlignLeft, AlignRight, Type, AlignCenter } from 'lucide-react';
 import * as LucideIcons from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import NumberTicker from "@/components/ui/number-ticker";
@@ -32,23 +32,34 @@ export default function Dashboard() {
             value: 0,
             targetValue: 35,
             isEditing: false,
-            editingValue: "0", // Inclure editingValue
+            editingValue: "0",
             icon: "Twitter",
         },
     ]);
     const [resetTrigger, setResetTrigger] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [showIconPicker, setShowIconPicker] = useState<number | null>(null);
+    const [showIcon, setShowIcon] = useState(true);
+    const [iconPosition, setIconPosition] = useState<'left' | 'right'>('left');
 
     // Style states
     const [gradientStart, setGradientStart] = useState("#4158D0");
     const [gradientEnd, setGradientEnd] = useState("#C850C0");
     const [cardWidth, setCardWidth] = useState(400);
+    const [cardHeight, setCardHeight] = useState(150);
     const [cardBorderColor, setCardBorderColor] = useState("#000000");
     const [cardBorderWidth, setCardBorderWidth] = useState(0);
     const [cardBorderStyle, setCardBorderStyle] = useState("solid");
     const [cardIconSize, setCardIconSize] = useState(24);
     const [cardIconColor, setCardIconColor] = useState("#000000");
+    const [cardShadowColor, setCardShadowColor] = useState("#FFFFFF");
+    const [cardShadowIntensity, setCardShadowIntensity] = useState(5);
+    const [cardIconBackgroundColor, setCardIconBackgroundColor] = useState('#FFE4E4');
+    const [cardTextSize, setCardTextSize] = useState(21);
+    const [cardTextAlign, setCardTextAlign] = useState<'left' | 'center' | 'right'>('center');
+    const [cardBorderPosition, setCardBorderPosition] = useState<'inside' | 'outside'>('outside');
+    const [cardShadowPosition, setCardShadowPosition] = useState<'inside' | 'outside'>('outside');
+
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -73,9 +84,9 @@ export default function Dashboard() {
                     id: Date.now(),
                     label: `New Counter ${counters.length + 1}`,
                     value: 0,
-                    targetValue: 0,
+                    targetValue: 35,
                     isEditing: false,
-                    editingValue: "0", // Ajout de editingValue
+                    editingValue: "35",
                     icon: "Activity",
                 },
             ]);
@@ -97,7 +108,7 @@ export default function Dashboard() {
     const updateCounterLabel = (id: number, newLabel: string) => {
         setCounters((prevCounters) =>
             prevCounters.map((counter) =>
-                counter.id === id ? { ...counter, label: newLabel, isEditing: false } : counter
+                counter.id === id ? { ...counter, label: newLabel } : counter
             )
         );
     };
@@ -106,7 +117,7 @@ export default function Dashboard() {
         const numericValue = parseInt(newValue) || 0;
         setCounters((prevCounters) =>
             prevCounters.map((counter) =>
-                counter.id === id ? { ...counter, value: numericValue, editingValue: newValue } : counter
+                counter.id === id ? { ...counter, targetValue: numericValue, editingValue: newValue } : counter
             )
         );
     };
@@ -117,7 +128,6 @@ export default function Dashboard() {
                 counter.id === id ? { ...counter, icon: iconName } : counter
             )
         );
-        setShowIconPicker(null);
     };
 
     const resetAnimation = () => {
@@ -128,6 +138,7 @@ export default function Dashboard() {
         return {
             border: `${cardBorderWidth}px ${cardBorderStyle} ${cardBorderColor}`,
             width: `${cardWidth}px`,
+            height: `${cardHeight}px`,
         };
     };
 
@@ -142,16 +153,27 @@ export default function Dashboard() {
         return Icon ? <Icon size={size} color={color} /> : null;
     };
 
-    const getCardStyle = () => ({
-        width: `${cardWidth}px`,
-        border: cardBorderWidth ? `${cardBorderWidth}px ${cardBorderStyle} ${cardBorderColor}` : 'none',
-        background: 'white',
-        borderRadius: '16px',
-        boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
-    });
+    const getCardStyle = () => {
+        const borderWidth = cardBorderWidth ? `${cardBorderWidth}px` : '0px';
+        return {
+            width: '100%',
+            height: `${cardHeight}px`,
+            border: cardBorderPosition === 'inside' ? `${borderWidth} ${cardBorderStyle} ${cardBorderColor}` : 'none',
+            outline: cardBorderPosition === 'outside' ? `${borderWidth} ${cardBorderStyle} ${cardBorderColor}` : 'none',
+            outlineOffset: cardBorderPosition === 'outside' ? '0px' : 'initial',
+            background: 'white',
+            borderRadius: '16px',
+            boxShadow: `0 0 ${cardShadowIntensity}px ${cardShadowColor}`,
+            display: 'flex',
+            flexDirection: 'column' as const,
+            justifyContent: 'center',
+            alignItems: 'center',
+            padding: cardBorderPosition === 'inside' ? borderWidth : '0px',
+        };
+    };
 
-    const getIconContainerStyle = (color: string = '#FFE4E4') => ({
-        background: color,
+    const getIconContainerStyle = () => ({
+        background: cardIconBackgroundColor,
         borderRadius: '50%',
         width: `${cardIconSize + 24}px`,
         height: `${cardIconSize + 24}px`,
@@ -203,7 +225,7 @@ export default function Dashboard() {
                                     <div className="flex items-center justify-between mb-2">
                                         <div className="flex items-center space-x-2">
                                             <IconComponent iconName={counter.icon} size={18} color={cardIconColor} />
-                                            <span>{counter.label}</span>
+                                            <span className="font-medium">{counter.label}</span>
                                         </div>
                                         <div className="flex items-center space-x-2">
                                             <button onClick={() => toggleEditMode(counter.id)} className="text-blue-500 hover:text-blue-700">
@@ -214,13 +236,16 @@ export default function Dashboard() {
                                             </button>
                                         </div>
                                     </div>
-                                    <input
-                                        type="number"
-                                        value={counter.editingValue}
-                                        onChange={(e) => updateCounterValue(counter.id, e.target.value)}
-                                        className="w-full px-2 py-1 text-sm border border-gray-200 rounded"
-                                        placeholder="Enter value"
-                                    />
+                                    <div className="flex items-center space-x-2">
+                                        <input
+                                            type="number"
+                                            value={counter.targetValue}
+                                            onChange={(e) => updateCounterValue(counter.id, e.target.value)}
+                                            className="w-full px-2 py-1 text-sm border border-gray-200 rounded"
+                                            placeholder="Enter value"
+                                        />
+                                        <span className="text-sm text-gray-500">/ {counter.targetValue}</span>
+                                    </div>
                                 </div>
                             ))}
                         </div>
@@ -228,12 +253,8 @@ export default function Dashboard() {
                 </div>
 
                 {/* Main Content */}
-                <div className="flex-1 p-6 flex items-center" style={getMainBackgroundStyle()}>
-                    <div className={`grid grid-cols-1 gap-6 max-w-xl mx-auto ${
-                        counters.length === 1 ? 'self-center' :
-                            counters.length === 2 ? 'self-center' :
-                                'self-start'
-                    }`}>
+                <div className="flex-1 p-6 flex items-center justify-center" style={getMainBackgroundStyle()}>
+                    <div className="flex flex-col items-center gap-6 w-full max-w-xl">
                         <AnimatePresence>
                             {counters.map((counter) => (
                                 <motion.div
@@ -242,9 +263,10 @@ export default function Dashboard() {
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: -50 }}
                                     style={getCardStyle()}
+                                    className="w-full"
                                 >
-                                    <div className="p-6">
-                                        <div className="flex items-start gap-4">
+                                    <div className={`p-6 w-full h-full flex ${showIcon ? (iconPosition === 'left' ? 'flex-row' : 'flex-row-reverse') : ''} items-center justify-center`}>
+                                        {showIcon && (
                                             <div style={getIconContainerStyle()} className="shrink-0">
                                                 <IconComponent
                                                     iconName={counter.icon}
@@ -252,34 +274,27 @@ export default function Dashboard() {
                                                     color={cardIconColor}
                                                 />
                                             </div>
-                                            <div className="flex-1">
-                                                <div className="text-5xl font-bold mb-2">
-                                                    <NumberTicker
-                                                        key={resetTrigger ? "reset" : "normal"}
-                                                        value={counter.value}
-                                                    />
-                                                </div>
-                                                {counter.isEditing ? (
-                                                    <input
-                                                        type="text"
-                                                        value={counter.label}
-                                                        onChange={(e) => updateCounterLabel(counter.id, e.target.value)}
-                                                        onBlur={() => toggleEditMode(counter.id)}
-                                                        className="text-lg text-gray-600 w-full bg-transparent border-b border-gray-300 focus:outline-none focus:border-blue-500"
-                                                        autoFocus
-                                                    />
-                                                ) : (
-                                                    <div className="flex items-center gap-2">
-                                                        <h2 className="text-lg text-gray-600">{counter.label}</h2>
-                                                        <button
-                                                            onClick={() => toggleEditMode(counter.id)}
-                                                            className="opacity-0 group-hover:opacity-100 transition-opacity"
-                                                        >
-                                                            <Edit2 size={14} className="text-gray-400 hover:text-gray-600" />
-                                                        </button>
-                                                    </div>
-                                                )}
+                                        )}
+                                        <div className={`flex-1 ${showIcon ? 'ml-4' : ''} text-${cardTextAlign}`}>
+                                            <div className={`font-bold mb-2`} style={{ fontSize: `${cardTextSize * 2}px` }}>
+                                                <NumberTicker
+                                                    key={resetTrigger ? "reset" : "normal"}
+                                                    value={counter.value}
+                                                />
                                             </div>
+                                            {counter.isEditing ? (
+                                                <input
+                                                    type="text"
+                                                    value={counter.label}
+                                                    onChange={(e) => updateCounterLabel(counter.id, e.target.value)}
+                                                    onBlur={() => toggleEditMode(counter.id)}
+                                                    className={`text-gray-600 w-full bg-transparent border-b border-gray-300 focus:outline-none focus:border-blue-500 text-${cardTextAlign}`}
+                                                    style={{ fontSize: `${cardTextSize}px` }}
+                                                    autoFocus
+                                                />
+                                            ) : (
+                                                <h2 className="text-gray-600" style={{ fontSize: `${cardTextSize}px` }}>{counter.label}</h2>
+                                            )}
                                         </div>
                                     </div>
                                 </motion.div>
@@ -294,44 +309,39 @@ export default function Dashboard() {
                         {/* Background Settings */}
                         <div className="space-y-3">
                             <div className="flex items-center gap-2">
-                                <Palette className="w-5 h-5 text-gray-500" />
+                                <Palette className="w-5 h-5 text-gray-500"/>
                                 <h3 className="text-sm font-medium">Background Gradient</h3>
                             </div>
                             <div className="space-y-2 pl-7">
                                 <div className="flex gap-2">
                                     <div className="relative flex-1">
-                                        <div
-                                            className="w-full h-10 rounded-lg cursor-pointer border border-gray-200"
-                                            style={{background: `linear-gradient(to right, ${gradientStart}, ${gradientEnd})`}}
-                                        />
+                                        <label className="text-xs text-gray-500">Start Color</label>
                                         <input
                                             type="color"
                                             value={gradientStart}
                                             onChange={(e) => setGradientStart(e.target.value)}
-                                            className="absolute inset-0 opacity-0 cursor-pointer"
+                                            className="w-full h-10 rounded-lg cursor-pointer"
                                         />
                                     </div>
                                     <div className="relative flex-1">
-                                        <div
-                                            className="w-full h-10 rounded-lg cursor-pointer border border-gray-200"
-                                            style={{background: gradientEnd}}
-                                        />
+                                        <label className="text-xs text-gray-500">End Color</label>
                                         <input
                                             type="color"
                                             value={gradientEnd}
                                             onChange={(e) => setGradientEnd(e.target.value)}
-                                            className="absolute inset-0 opacity-0 cursor-pointer"
+                                            className="w-full h-10 rounded-lg cursor-pointer"
                                         />
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div className="h-px bg-gray-200 my-6" />
+
+                        <div className="h-px bg-gray-200 my-6"/>
 
                         {/* Card Settings */}
                         <div className="space-y-3">
                             <div className="flex items-center gap-2">
-                                <Layout className="w-5 h-5 text-gray-500" />
+                                <Layout className="w-5 h-5 text-gray-500"/>
                                 <h3 className="text-sm font-medium">Card Settings</h3>
                             </div>
                             <div className="space-y-2 pl-7">
@@ -347,14 +357,26 @@ export default function Dashboard() {
                                     />
                                     <span className="text-xs text-gray-500 w-12">{cardWidth}px</span>
                                 </div>
+                                <label className="text-xs text-gray-500">Height</label>
+                                <div className="flex items-center gap-2">
+                                    <input
+                                        type="range"
+                                        min="100"
+                                        max="400"
+                                        value={cardHeight}
+                                        onChange={(e) => setCardHeight(parseInt(e.target.value, 10))}
+                                        className="flex-1"
+                                    />
+                                    <span className="text-xs text-gray-500 w-12">{cardHeight}px</span>
+                                </div>
                             </div>
                         </div>
-                        <div className="h-px bg-gray-200 my-6" />
+                        <div className="h-px bg-gray-200 my-6"/>
 
                         {/* Border Settings */}
                         <div className="space-y-3">
                             <div className="flex items-center gap-2">
-                                <BorderAll className="w-5 h-5 text-gray-500" />
+                                <BorderAll className="w-5 h-5 text-gray-500"/>
                                 <h3 className="text-sm font-medium">Border Settings</h3>
                             </div>
                             <div className="space-y-2 pl-7">
@@ -389,60 +411,179 @@ export default function Dashboard() {
                                     <option value="double">Double</option>
                                     <option value="groove">Groove</option>
                                 </select>
+                                <label className="text-xs text-gray-500">Position</label>
+                                <div className="flex gap-2">
+                                    <button
+                                        onClick={() => setCardBorderPosition('inside')}
+                                        className={`flex-1 p-2 rounded-lg ${cardBorderPosition === 'inside' ? 'bg-blue-100' : 'bg-gray-200'}`}
+                                    >
+                                        Inside
+                                    </button>
+                                    <button
+                                        onClick={() => setCardBorderPosition('outside')}
+                                        className={`flex-1 p-2 rounded-lg ${cardShadowPosition === 'outside' ? 'bg-blue-100' : 'bg-gray-200'}`}
+                                    >
+                                        Outside
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                        <div className="h-px bg-gray-200 my-6" />
+                        <div className="h-px bg-gray-200 my-6"/>
+
+
+                        {/* Shadow Settings */}
+                        <div className="space-y-3">
+                            <div className="flex items-center gap-2">
+                                <Layers className="w-5 h-5 text-gray-500"/>
+                                <h3 className="text-sm font-medium">Shadow Settings</h3>
+                            </div>
+                            <div className="space-y-2 pl-7">
+                                <label className="text-xs text-gray-500">Color</label>
+                                <input
+                                    type="color"
+                                    value={cardShadowColor}
+                                    onChange={(e) => setCardShadowColor(e.target.value)}
+                                    className="w-full h-10 rounded-lg cursor-pointer"
+                                />
+                                <label className="text-xs text-gray-500">Intensity</label>
+                                <div className="flex items-center gap-2">
+                                    <input
+                                        type="range"
+                                        min="0"
+                                        max="50"
+                                        value={cardShadowIntensity}
+                                        onChange={(e) => setCardShadowIntensity(parseInt(e.target.value, 10))}
+                                        className="flex-1"
+                                    />
+                                    <span className="text-xs text-gray-500 w-12">{cardShadowIntensity}px</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="h-px bg-gray-200 my-6"/>
 
                         {/* Icon Settings */}
                         <div className="space-y-3">
                             <div className="flex items-center gap-2">
-                                <Icons className="w-5 h-5 text-gray-500" />
+                                <Icons className="w-5 h-5 text-gray-500"/>
                                 <h3 className="text-sm font-medium">Icon Settings</h3>
                             </div>
                             <div className="space-y-4 pl-7">
-                                <div className="grid grid-cols-5 gap-2 p-2 bg-white rounded-lg border border-gray-200">
-                                    {iconList.map(({ name, icon: Icon }) => (
-                                        <button
-                                            key={name}
-                                            onClick={() => {
-                                                if (counters.length > 0) {
-                                                    updateCounterIcon(counters[0].id, name);
-                                                }
-                                            }}
-                                            className={`p-2 rounded-lg transition-colors ${
-                                                counters[0]?.icon === name ? 'bg-blue-50 text-blue-500' : 'hover:bg-gray-100'
-                                            }`}
-                                        >
-                                            <Icon size={24} />
-                                        </button>
-                                    ))}
+                                <label className="flex items-center">
+                                    <input
+                                        type="checkbox"
+                                        checked={showIcon}
+                                        onChange={(e) => setShowIcon(e.target.checked)}
+                                        className="mr-2"
+                                    />
+                                    <span className="text-xs text-gray-500">Show Icon</span>
+                                </label>
+                                {showIcon && (
+                                    <>
+                                        <div className="grid grid-cols-5 gap-2 p-2 bg-white rounded-lg border border-gray-200">
+                                            {iconList.map(({name, icon: Icon}) => (
+                                                <button
+                                                    key={name}
+                                                    onClick={() => {
+                                                        if (counters.length > 0) {
+                                                            updateCounterIcon(counters[counters.length - 1].id, name);
+                                                        }
+                                                    }}
+                                                    className={`p-2 rounded-lg transition-colors ${
+                                                        counters[counters.length - 1]?.icon === name ? 'bg-blue-50 text-blue-500' : 'hover:bg-gray-100'
+                                                    }`}
+                                                >
+                                                    <Icon size={24}/>
+                                                </button>
+                                            ))}
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label className="text-xs text-gray-500">Icon Position</label>
+                                            <div className="flex gap-2">
+                                                <button
+                                                    onClick={() => setIconPosition('left')}
+                                                    className={`flex-1 p-2 rounded-lg ${iconPosition === 'left' ? 'bg-blue-100' : 'bg-gray-200'}`}
+                                                >
+                                                    <AlignLeft size={18} className="mx-auto" />
+                                                </button>
+                                                <button
+                                                    onClick={() => setIconPosition('right')}
+                                                    className={`flex-1 p-2 rounded-lg ${iconPosition === 'right' ? 'bg-blue-100' : 'bg-gray-200'}`}
+                                                >
+                                                    <AlignRight size={18} className="mx-auto" />
+                                                </button>
+                                            </div>
+                                            <label className="text-xs text-gray-500">Size</label>
+                                            <div className="flex items-center gap-2">
+                                                <input
+                                                    type="range"
+                                                    min="16"
+                                                    max="48"
+                                                    value={cardIconSize}
+                                                    onChange={(e) => setCardIconSize(parseInt(e.target.value, 10))}
+                                                    className="flex-1"
+                                                />
+                                                <span className="text-xs text-gray-500 w-12">{cardIconSize}px</span>
+                                            </div>
+                                            <label className="text-xs text-gray-500">Color</label>
+                                            <input
+                                                type="color"
+                                                value={cardIconColor}
+                                                onChange={(e) => setCardIconColor(e.target.value)}
+                                                className="w-full h-10 rounded-lg cursor-pointer"
+                                            />
+                                            <label className="text-xs text-gray-500">Background Color</label>
+                                            <input
+                                                type="color"
+                                                value={cardIconBackgroundColor}
+                                                onChange={(e) => setCardIconBackgroundColor(e.target.value)}
+                                                className="w-full h-10 rounded-lg cursor-pointer"
+                                            />
+                                        </div>
+                                    </>
+                                )}
+                            </div>
+                        </div>
+                        <div className="h-px bg-gray-200 my-6"/>
+
+                        {/* Text Settings */}
+                        <div className="space-y-3">
+                            <div className="flex items-center gap-2">
+                                <Type className="w-5 h-5 text-gray-500"/>
+                                <h3 className="text-sm font-medium">Text Settings</h3>
+                            </div>
+                            <div className="space-y-2 pl-7">
+                                <label className="text-xs text-gray-500">Text Size</label>
+                                <div className="flex items-center gap-2">
+                                    <input
+                                        type="range"
+                                        min="12"
+                                        max="36"
+                                        value={cardTextSize}
+                                        onChange={(e) => setCardTextSize(parseInt(e.target.value, 10))}
+                                        className="flex-1"
+                                    />
+                                    <span className="text-xs text-gray-500 w-12">{cardTextSize}px</span>
                                 </div>
-                                <div className="space-y-2">
-                                    <label className="text-xs text-gray-500">Size</label>
-                                    <div className="flex items-center gap-2">
-                                        <input
-                                            type="range"
-                                            min="16"
-                                            max="48"
-                                            value={cardIconSize}
-                                            onChange={(e) => setCardIconSize(parseInt(e.target.value, 10))}
-                                            className="flex-1"
-                                        />
-                                        <span className="text-xs text-gray-500 w-12">{cardIconSize}px</span>
-                                    </div>
-                                    <label className="text-xs text-gray-500">Color</label>
-                                    <div className="relative">
-                                        <div
-                                            className="w-full h-10 rounded-lg cursor-pointer border border-gray-200"
-                                            style={{background: cardIconColor}}
-                                        />
-                                        <input
-                                            type="color"
-                                            value={cardIconColor}
-                                            onChange={(e) => setCardIconColor(e.target.value)}
-                                            className="absolute inset-0 opacity-0 cursor-pointer"
-                                        />
-                                    </div>
+                                <label className="text-xs text-gray-500">Text Alignment</label>
+                                <div className="flex gap-2">
+                                    <button
+                                        onClick={() => setCardTextAlign('left')}
+                                        className={`flex-1 p-2 rounded-lg ${cardTextAlign === 'left' ? 'bg-blue-100' : 'bg-gray-200'}`}
+                                    >
+                                        <AlignLeft size={18} className="mx-auto" />
+                                    </button>
+                                    <button
+                                        onClick={() => setCardTextAlign('center')}
+                                        className={`flex-1 p-2 rounded-lg ${cardTextAlign === 'center' ? 'bg-blue-100' : 'bg-gray-200'}`}
+                                    >
+                                        <AlignCenter size={18} className="mx-auto" />
+                                    </button>
+                                    <button
+                                        onClick={() => setCardTextAlign('right')}
+                                        className={`flex-1 p-2 rounded-lg ${cardTextAlign === 'right' ? 'bg-blue-100' : 'bg-gray-200'}`}
+                                    >
+                                        <AlignRight size={18} className="mx-auto" />
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -459,7 +600,7 @@ export default function Dashboard() {
                                     onClick={resetAnimation}
                                     className="w-full px-4 py-2 bg-gray-200 rounded-lg text-sm hover:bg-gray-300 transition-colors flex items-center justify-center gap-2"
                                 >
-                                <RefreshCw size={18} />
+                                    <RefreshCw size={18}/>
                                     <span>Reset Animation</span>
                                 </button>
                             </div>
