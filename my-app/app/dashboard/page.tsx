@@ -57,8 +57,8 @@ export default function Dashboard() {
         { start: "#85FFBD", end: "#FFFB7D" },
         { start: "#FF9A8B", end: "#FF6A88" },
     ];
-    const [cardWidth, setCardWidth] = useState(650);
-    const [cardHeight, setCardHeight] = useState(300);
+    const [cardWidth, setCardWidth] = useState(430);
+    const [cardHeight, setCardHeight] = useState(220);
     const [cardBorderColor, setCardBorderColor] = useState("#000000");
     const [cardBorderWidth, setCardBorderWidth] = useState(0);
     const [cardBorderStyle, setCardBorderStyle] = useState("solid");
@@ -73,7 +73,7 @@ export default function Dashboard() {
     const [cardShadowPosition, setCardShadowPosition] = useState<'inside' | 'outside'>('outside');
 
     // New state variables for main content
-    const [mainContentWidth, setMainContentWidth] = useState(800);
+    const [mainContentWidth, setMainContentWidth] = useState(600);
     const [mainContentHeight, setMainContentHeight] = useState(600);
     const [mainContentBorderRadius, setMainContentBorderRadius] = useState(20);
     const [isExporting, setIsExporting] = useState(false);
