@@ -10,6 +10,7 @@ import { Switch } from "@/components/ui/switch";
 import { toPng } from 'html-to-image';
 import GIFEncoder from 'gifencoder';
 import { createCanvas, loadImage } from 'canvas';
+import AnimatedGradientText from "@/components/ui/animated-gradient-text";
 
 const iconList = [
     { name: "Twitter", icon: Twitter },
@@ -48,7 +49,7 @@ export default function Dashboard() {
     const [iconPosition, setIconPosition] = useState<'left' | 'right'>('left');
     const [useRainbowBorder, setUseRainbowBorder] = useState(false);
 
-    // Style statesss
+    // Style states
     const [backgroundType, setBackgroundType] = useState<'gradient' | 'solid'>('gradient');
     const [solidColor, setSolidColor] = useState("#4158D0");
     const [selectedGradient, setSelectedGradient] = useState(0);
@@ -59,16 +60,16 @@ export default function Dashboard() {
         { start: "#85FFBD", end: "#FFFB7D" },
         { start: "#FF9A8B", end: "#FF6A88" },
     ];
-    const [cardWidth, setCardWidth] = useState(400);
-    const [cardHeight, setCardHeight] = useState(150);
+    const [cardWidth, setCardWidth] = useState(650);
+    const [cardHeight, setCardHeight] = useState(300);
     const [cardBorderColor, setCardBorderColor] = useState("#000000");
     const [cardBorderWidth, setCardBorderWidth] = useState(0);
     const [cardBorderStyle, setCardBorderStyle] = useState("solid");
-    const [cardIconSize, setCardIconSize] = useState(48);
-    const [cardIconColor, setCardIconColor] = useState("#000000");
+    const [cardIconSize, setCardIconSize] = useState(50);
+    const [cardIconColor, setCardIconColor] = useState("#FFFFFF");
     const [cardShadowColor, setCardShadowColor] = useState("#FFFFFF");
-    const [cardShadowIntensity, setCardShadowIntensity] = useState(5);
-    const [cardIconBackgroundColor, setCardIconBackgroundColor] = useState('#FFE4E4');
+    const [cardShadowIntensity, setCardShadowIntensity] = useState(50);
+    const [cardIconBackgroundColor, setCardIconBackgroundColor] = useState('#8B5CF6'); // Violet color
     const [cardTextSize, setCardTextSize] = useState(21);
     const [cardTextAlign, setCardTextAlign] = useState<'left' | 'center' | 'right'>('center');
     const [cardBorderPosition, setCardBorderPosition] = useState<'inside' | 'outside'>('outside');
@@ -78,7 +79,7 @@ export default function Dashboard() {
     // New state variables for main content
     const [mainContentWidth, setMainContentWidth] = useState(800);
     const [mainContentHeight, setMainContentHeight] = useState(600);
-    const [mainContentBorderRadius, setMainContentBorderRadius] = useState(0);
+    const [mainContentBorderRadius, setMainContentBorderRadius] = useState(20);
     const [isExporting, setIsExporting] = useState(false);
 
     useEffect(() => {
@@ -188,7 +189,7 @@ export default function Dashboard() {
     };
 
     const IconComponent = ({ iconName, size, color }: { iconName: string; size: number; color: string }) => {
-        const Icon = LucideIcons[iconName as keyof typeof LucideIcons];
+        const Icon = LucideIcons[iconName as keyof typeof LucideIcons] as React.ElementType;
         return Icon ? <Icon size={size} color={color} /> : null;
     };
 
@@ -383,7 +384,7 @@ export default function Dashboard() {
                 <div className="flex-1 p-6 flex items-center justify-center overflow-hidden">
                     <div
                         style={getMainBackgroundStyle()}
-                        className="main-content flex flex-col items-center justify-center gap-6 p-6 overflow-y-auto max-h-full w-full"
+                        className="main-content flex flex-col items-center justify-center gap-6 p-6 overflow-y-auto max-h-full w-full relative"
                     >
                         <AnimatePresence>
                             {counters.map((counter) => (
@@ -478,6 +479,11 @@ export default function Dashboard() {
                                 </div>
                             ))}
                         </AnimatePresence>
+                        <div className="absolute bottom-2 left-0 right-0 flex justify-center">
+                            <AnimatedGradientText className="text-xs opacity-50">
+                                Designed in Statpulse.io
+                            </AnimatedGradientText>
+                        </div>
                     </div>
                 </div>
 
@@ -725,7 +731,7 @@ export default function Dashboard() {
                             </div>
                             {isSettingExpanded('shadow') && (
                                 <div className="space-y-2 pl-7">
-                                    <label className="text-xstext-gray-500">Color</label>
+                                    <label className="text-xs text-gray-500">Color</label>
                                     <input
                                         type="color"
                                         value={cardShadowColor}
