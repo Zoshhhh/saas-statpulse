@@ -1,4 +1,4 @@
-'use client'
+"use client"
 
 import * as React from "react"
 import Link from "next/link"
@@ -12,6 +12,7 @@ import {
     NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
 import { cn } from "@/lib/utils"
+import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs"
 
 export function Navigation() {
     return (
@@ -69,12 +70,21 @@ export function Navigation() {
                         </NavigationMenuList>
                     </NavigationMenu>
                     <div className="flex items-center space-x-4">
-                        <Link href="/login">
-                            <Button variant="ghost" size="sm">Login</Button>
-                        </Link>
-                        <Link href="/signup">
-                            <Button size="sm">Try for free</Button>
-                        </Link>
+                        <SignedOut>
+                            <SignInButton mode="modal">
+                                <Button variant="ghost" size="sm">
+                                    Login
+                                </Button>
+                            </SignInButton>
+                        </SignedOut>
+                        <SignedOut>
+                            <Link href="/signup">
+                                <Button size="sm">Try for free</Button>
+                            </Link>
+                        </SignedOut>
+                        <SignedIn>
+                            <UserButton />
+                        </SignedIn>
                     </div>
                 </div>
             </nav>
@@ -113,4 +123,3 @@ function navigationMenuTriggerStyle() {
         "group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50"
     )
 }
-
