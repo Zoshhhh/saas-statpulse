@@ -64,7 +64,7 @@ export default function Dashboard() {
     const [cardBorderColor, setCardBorderColor] = useState("#000000");
     const [cardBorderWidth, setCardBorderWidth] = useState(0);
     const [cardBorderStyle, setCardBorderStyle] = useState("solid");
-    const [cardIconSize, setCardIconSize] = useState(24);
+    const [cardIconSize, setCardIconSize] = useState(48);
     const [cardIconColor, setCardIconColor] = useState("#000000");
     const [cardShadowColor, setCardShadowColor] = useState("#FFFFFF");
     const [cardShadowIntensity, setCardShadowIntensity] = useState(5);
@@ -557,7 +557,7 @@ export default function Dashboard() {
                                     <div className="flex items-center gap-2">
                                         <input
                                             type="range"
-                                            min="300"
+                                            min="150"
                                             max="800"
                                             value={mainContentHeight}
                                             onChange={(e) => setMainContentHeight(parseInt(e.target.value, 10))}
@@ -789,7 +789,7 @@ export default function Dashboard() {
                                                         className={`p-2 rounded-lg transition-colors ${
                                                             counters[counters.length - 1]?.icon === name ? 'bg-blue-50 text-blue-500' : 'hover:bg-gray-100'}`}
                                                     >
-                                                        <Icon size={24}/>
+                                                        <Icon size={40}/>
                                                     </button>
                                                 ))}
                                             </div>
@@ -814,7 +814,7 @@ export default function Dashboard() {
                                                     <input
                                                         type="range"
                                                         min="16"
-                                                        max="48"
+                                                        max="64"
                                                         value={cardIconSize}
                                                         onChange={(e) => setCardIconSize(parseInt(e.target.value, 10))}
                                                         className="flex-1"
