@@ -48,7 +48,7 @@ export default function Dashboard() {
     const [iconPosition, setIconPosition] = useState<'left' | 'right'>('left');
     const [useRainbowBorder, setUseRainbowBorder] = useState(false);
 
-    // Style states
+    // Style statess
     const [backgroundType, setBackgroundType] = useState<'gradient' | 'solid'>('gradient');
     const [solidColor, setSolidColor] = useState("#4158D0");
     const [selectedGradient, setSelectedGradient] = useState(0);
