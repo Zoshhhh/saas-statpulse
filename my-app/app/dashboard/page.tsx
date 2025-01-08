@@ -8,7 +8,8 @@ import NumberTicker from "@/components/ui/number-ticker";
 import RainbowBorder from '@/components/RainbowBorder';
 import { Switch } from "@/components/ui/switch";
 import { toPng } from 'html-to-image';
-import GIF from 'gif.js';
+import GIFEncoder from 'gifencoder';
+import { createCanvas, loadImage } from 'canvas';
 
 const iconList = [
     { name: "Twitter", icon: Twitter },
@@ -236,37 +237,56 @@ export default function Dashboard() {
         }
 
         try {
-            const frames = [];
+            const width = mainContent.offsetWidth;
+            const height = mainContent.offsetHeight;
+            const encoder = new GIFEncoder(width, height);
+            encoder.start();
+            encoder.setRepeat(0);   // 0 for repeat, -1 for no-repeat
+            encoder.setDelay(500);  // frame delay in ms
+            encoder.setQuality(10); // image quality. 10 is default.
+
+            const canvas = createCanvas(width, height);
+            const ctx = canvas.getContext('2d');
+
             for (let i = 0; i < 10; i++) {
                 const dataUrl = await toPng(mainContent);
-                frames.push(dataUrl);
+                const image = await loadImage(dataUrl);
+                ctx.drawImage(image, 0, 0, width, height);
+                encoder.addFrame(ctx as any);
             }
 
-            const gif = new GIF({
-                workers: 2,
-                quality: 10,
-                width: mainContent.offsetWidth,
-                height: mainContent.offsetHeight,
-            });
-
-            frames.forEach(frame => {
-                const img = new Image();
-                img.src = frame;
-                gif.addFrame(img, { delay: 200 });
-            });
-
-            gif.on('finished', (blob: Blob) => {
-                const url = URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = 'dashboard-export.gif';
-                link.click();
-                setIsExporting(false);
-            });
-
-            gif.render();
+            encoder.finish();
+            const buffer = encoder.out.getData();
+            const blob = new Blob([buffer], { type: 'image/gif' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'dashboard-export.gif';
+            link.click();
         } catch (error) {
             console.error('Error exporting to GIF:', error);
+        } finally {
+            setIsExporting(false);
+        }
+    };
+
+    const exportToPng = async () => {
+        setIsExporting(true);
+        const mainContent = document.querySelector('.main-content') as HTMLElement;
+        if (!mainContent) {
+            setIsExporting(false);
+            return;
+        }
+
+        try {
+            const dataUrl = await toPng(mainContent);
+            const link = document.createElement('a');
+            link.href = dataUrl;
+            link.download = 'dashboard-export.png';
+            link.click();
+        } catch (error) {
+            console.error('Error exporting to PNG:', error);
+        } finally {
             setIsExporting(false);
         }
     };
@@ -283,7 +303,14 @@ export default function Dashboard() {
                         disabled={isExporting}
                         className="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg text-sm hover:from-blue-600 hover:to-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                        {isExporting ? 'Exporting...' : 'Export'}
+                        {isExporting ? 'Exporting...' : 'Export GIF'}
+                    </button>
+                    <button
+                        onClick={exportToPng}
+                        disabled={isExporting}
+                        className="px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg text-sm hover:from-green-600 hover:to-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        {isExporting ? 'Exporting...' : 'Export PNG'}
                     </button>
                 </div>
             </nav>
@@ -698,7 +725,7 @@ export default function Dashboard() {
                             </div>
                             {isSettingExpanded('shadow') && (
                                 <div className="space-y-2 pl-7">
-                                    <label className="text-xs text-gray-500">Color</label>
+                                    <label className="text-xstext-gray-500">Color</label>
                                     <input
                                         type="color"
                                         value={cardShadowColor}
