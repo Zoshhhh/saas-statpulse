@@ -125,10 +125,10 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
     const uploadCustomIcon = async (file: File) => {
         try {
             const formData = new FormData();
-            formData.append('icon', file);
+            formData.append('icon', file); // Ajoute le fichier dans FormData
 
             const response = await fetch('/api/upload', {
-                method: 'POST', // Important : Utilise la méthode POST
+                method: 'POST',
                 body: formData,
             });
 
@@ -137,17 +137,16 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
             }
 
             const data = await response.json();
-            console.log('Upload réussi ! Réponse serveur :', data);
+            console.log('Réponse de l\'API :', data.message, data.files);
             return data;
         } catch (error) {
             if (error instanceof Error) {
-                console.error('Erreur lors de l\'upload de l\'icône :', error.message);
+                console.error('Erreur lors de l\'upload :', error.message);
             } else {
                 console.error('Erreur inattendue :', error);
             }
         }
     };
-
     return (
         <div className="w-80 bg-gray-100 h-[calc(100vh-64px)] p-4 border-l border-gray-300 overflow-y-auto">
             <div className="space-y-6">
