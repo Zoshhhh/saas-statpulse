@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import * as LucideIcons from "lucide-react";
 import LeftPanel from '@/components/LeftPanel';
 import MainContent from '@/components/MainContent';
 import SettingsPanel from '@/components/SettingsPanel';
+import {Clock} from "lucide-react";
 
 const iconList = [
     { name: "Twitter", icon: LucideIcons.Twitter },
@@ -226,26 +227,67 @@ export default function Dashboard() {
         <div className="min-h-screen bg-gray-100 text-black">
             <nav className="flex items-center justify-center px-6 py-4 bg-gray-100 border-b border-gray-300">
                 <div className="flex items-center space-x-4">
-                    <button className="px-4 py-2 bg-gray-200 rounded-lg text-sm hover:bg-gray-300 transition-colors">
-                        Remove Watermark
-                    </button>
+                    {/* Export GIF Button */}
                     <button
                         onClick={exportToGif}
                         disabled={isExporting}
-                        className="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg text-sm hover:from-blue-600 hover:to-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        className={`px-4 py-2 text-white text-sm flex items-center justify-center space-x-2 rounded-md transition-colors ${
+                            isExporting
+                                ? 'bg-blue-300 cursor-wait'
+                                : 'bg-blue-500 hover:bg-blue-400'
+                        }`}
+                        onMouseEnter={(e) => {
+                            if (!isExporting) {
+                                e.target.classList.add('cursor-not-allowed', 'bg-blue-300');
+                            }
+                        }}
+                        onMouseLeave={(e) => {
+                            if (!isExporting) {
+                                e.target.classList.remove('cursor-not-allowed', 'bg-blue-300');
+                            }
+                        }}
                     >
-                        {isExporting ? 'Exporting...' : 'Export GIF'}
+                        {isExporting ? (
+                            <>
+                                <svg
+                                    className="animate-spin h-5 w-5 text-white"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <circle
+                                        className="opacity-25"
+                                        cx="12"
+                                        cy="12"
+                                        r="10"
+                                        stroke="currentColor"
+                                        strokeWidth="4"
+                                    />
+                                    <path
+                                        className="opacity-75"
+                                        fill="currentColor"
+                                        d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 11-8 8z"
+                                    />
+                                </svg>
+                                <span>Exporting GIF...</span>
+                            </>
+                        ) : (
+                            <>
+                            <span>Export GIF</span>
+                                <Clock className="text-white" size={14} />
+                            </>
+                        )}
                     </button>
+
+                    {/* Export PNG Button */}
                     <button
                         onClick={exportToPng}
-                        disabled={isExporting}
-                        className="px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg text-sm hover:from-green-600 hover:to-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="px-4 py-2 bg-green-500 text-white text-sm hover:bg-green-600 transition-colors flex items-center justify-center space-x-2 rounded-md"
                     >
-                        {isExporting ? 'Exporting...' : 'Export PNG'}
+                        <span>Export PNG</span>
                     </button>
                 </div>
             </nav>
-
             <div className="flex">
                 <LeftPanel
                     searchQuery={searchQuery}
