@@ -44,3 +44,4 @@ next-env.d.ts
 /public/uploads/icons/*
 /public/icons/*
 /uploads/icons/*
+/public/uploads/*
