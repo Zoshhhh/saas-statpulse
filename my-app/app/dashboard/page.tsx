@@ -237,13 +237,15 @@ export default function Dashboard() {
                                 : 'bg-blue-500 hover:bg-blue-400'
                         }`}
                         onMouseEnter={(e) => {
+                            const target = e.target as HTMLElement; // Type assertion
                             if (!isExporting) {
-                                e.target.classList.add('cursor-not-allowed', 'bg-blue-300');
+                                target.classList.add('cursor-not-allowed', 'bg-blue-300');
                             }
                         }}
                         onMouseLeave={(e) => {
+                            const target = e.target as HTMLElement; // Type assertion
                             if (!isExporting) {
-                                e.target.classList.remove('cursor-not-allowed', 'bg-blue-300');
+                                target.classList.remove('cursor-not-allowed', 'bg-blue-300');
                             }
                         }}
                     >
@@ -273,8 +275,8 @@ export default function Dashboard() {
                             </>
                         ) : (
                             <>
-                            <span>Export GIF</span>
-                                <Clock className="text-white" size={14} />
+                                <span>Export GIF</span>
+                                <Clock className="text-white" size={14}/>
                             </>
                         )}
                     </button>
