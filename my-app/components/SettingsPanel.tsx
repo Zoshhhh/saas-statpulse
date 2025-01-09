@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Palette, Layout, FlagIcon as BorderAll, Layers, ImagesIcon as Icons, Type, Sparkles, Clock, ChevronRight, AlignLeft, AlignRight, AlignCenter, RefreshCw, Upload } from 'lucide-react';
 import { Switch } from "@/components/ui/switch";
 
@@ -115,17 +115,12 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
 
     const isSettingExpanded = (setting: string) => expandedSettings.includes(setting);
 
-    const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        if (file) {
-            uploadCustomIcon(file);
-        }
-    };
+    const [uploadedIconUrl, setUploadedIconUrl] = useState<string | null>(null);
 
     const uploadCustomIcon = async (file: File) => {
         try {
             const formData = new FormData();
-            formData.append('icon', file); // Ajoute le fichier dans FormData
+            formData.append('icon', file);
 
             const response = await fetch('/api/upload', {
                 method: 'POST',
@@ -137,8 +132,15 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
             }
 
             const data = await response.json();
-            console.log('Réponse de l\'API :', data.message, data.files);
-            return data;
+            console.log('Réponse de l\'API :', data); // Ajoute ce log pour vérifier
+
+            // Récupérer l'URL du fichier uploadé
+            const fileUrl = data.url; // Assure-toi que la clé correspond à la structure de la réponse
+            console.log('URL de l\'icône uploadée :', fileUrl);
+
+            if (fileUrl) {
+                setUploadedIconUrl(fileUrl); // Met à jour l'état
+            }
         } catch (error) {
             if (error instanceof Error) {
                 console.error('Erreur lors de l\'upload :', error.message);
@@ -146,7 +148,13 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                 console.error('Erreur inattendue :', error);
             }
         }
+    };    const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (file) {
+            uploadCustomIcon(file);
+        }
     };
+
     return (
         <div className="w-80 bg-gray-100 h-[calc(100vh-64px)] p-4 border-l border-gray-300 overflow-y-auto">
             <div className="space-y-6">
@@ -445,7 +453,8 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                             </div>
                             {showIcon && (
                                 <>
-                                    <div className="grid grid-cols-5 gap-2 p-2 bg-white rounded-lg border border-gray-200">
+                                    <div
+                                        className="grid grid-cols-5 gap-2 p-2 bg-white rounded-lg border border-gray-200">
                                         {counters.map(({id, icon}) => (
                                             <button
                                                 key={id}
@@ -454,9 +463,9 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                                                     counters[counters.length - 1]?.icon === icon ? 'bg-blue-50 text-blue-500' : 'hover:bg-gray-100'}`}
                                             >
                                                 {typeof icon === 'string' && icon.startsWith('data:') ? (
-                                                    <img src={icon} alt="Custom icon" className="w-6 h-6" />
+                                                    <img src={icon} alt="Custom icon" className="w-6 h-6"/>
                                                 ) : (
-                                                    <Icons size={24} />
+                                                    <Icons size={24}/>
                                                 )}
                                             </button>
                                         ))}
@@ -464,15 +473,30 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                                     <div className="space-y-2">
                                         <label className="text-xs text-gray-500">Upload Custom Icon</label>
                                         <div className="flex items-center justify-center w-full">
-                                            <label htmlFor="custom-icon-upload" className="flex flex-col items-center justify-center w-full h-24 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
+                                            <label htmlFor="custom-icon-upload"
+                                                   className="flex flex-col items-center justify-center w-full h-24 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
                                                 <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                                    <Upload className="w-6 h-6 text-gray-400" />
-                                                    <p className="mb-2 text-sm text-gray-500"><span className="font-semibold">Click to upload</span> or drag and drop</p>
-                                                    <p className="text-xs text-gray-500">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+                                                    <Upload className="w-6 h-6 text-gray-400"/>
+                                                    <p className="mb-2 text-sm text-gray-500"><span
+                                                        className="font-semibold">Click to upload</span> or drag and
+                                                        drop</p>
+                                                    <p className="text-xs text-gray-500">SVG, PNG, JPG or GIF (MAX.
+                                                        800x400px)</p>
                                                 </div>
-                                                <input id="custom-icon-upload" type="file" className="hidden" onChange={handleFileUpload} accept="image/*" />
+                                                <input id="custom-icon-upload" type="file" className="hidden"
+                                                       onChange={handleFileUpload} accept="image/*"/>
                                             </label>
                                         </div>
+                                        {uploadedIconUrl && (
+                                            <div className="mt-4">
+                                                <h3 className="text-xs font-medium text-gray-500">Preview:</h3>
+                                                <img
+                                                    src={uploadedIconUrl}
+                                                    alt="Uploaded Icon"
+                                                    className="w-16 h-16 rounded-lg object-cover"
+                                                />
+                                            </div>
+                                        )}
                                     </div>
                                     <div className="space-y-2">
                                         <label className="text-xs text-gray-500">Icon Position</label>
@@ -481,13 +505,13 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                                                 onClick={() => setIconPosition('left')}
                                                 className={`flex-1 p-2 rounded-lg ${iconPosition === 'left' ? 'bg-blue-100' : 'bg-gray-200'}`}
                                             >
-                                                <AlignLeft size={18} className="mx-auto" />
+                                                <AlignLeft size={18} className="mx-auto"/>
                                             </button>
                                             <button
                                                 onClick={() => setIconPosition('right')}
                                                 className={`flex-1 p-2 rounded-lg ${iconPosition === 'right' ? 'bg-blue-100' : 'bg-gray-200'}`}
                                             >
-                                                <AlignRight size={18} className="mx-auto" />
+                                                <AlignRight size={18} className="mx-auto"/>
                                             </button>
                                         </div>
                                         <label className="text-xs text-gray-500">Size</label>

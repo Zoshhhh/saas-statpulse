@@ -14,7 +14,6 @@
     "@radix-ui/react-navigation-menu": "^1.2.3",
     "@radix-ui/react-slot": "^1.1.1",
     "@radix-ui/react-switch": "^1.1.2",
-    "@types/formidable": "^3.4.5",
     "canvas": "^3.0.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -32,6 +31,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@types/formidable": "^3.4.5",
     "@types/gifencoder": "^2.0.3",
     "@types/node": "^20",
     "@types/react": "^19",
