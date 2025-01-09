@@ -14,7 +14,7 @@ export function Pricing() {
                             <CardTitle className="text-2xl">{plan.name}</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <p className="text-4xl font-bold mb-6">${plan.price}<span className="text-xl text-muted-foreground">/mo</span></p>
+                            <p className="text-4xl font-bold mb-6">${plan.price}<span className="text-xl text-muted-foreground">/life time</span></p>
                             <ul className="space-y-2 mb-6">
                                 {plan.features.map((feature, featureIndex) => (
                                     <li key={featureIndex} className="flex items-center">

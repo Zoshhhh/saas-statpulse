@@ -154,7 +154,7 @@ const MainContent: React.FC<MainContentProps> = ({
                 </AnimatePresence>
                 <div className="absolute bottom-2 left-0 right-0 flex justify-center">
                     <AnimatedGradientText className="text-xs opacity-50">
-                        Designed in Statpulse.io
+                        Designed in Statpulse.app
                     </AnimatedGradientText>
                 </div>
             </div>

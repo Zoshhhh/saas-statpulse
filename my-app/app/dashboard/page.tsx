@@ -31,12 +31,12 @@ export default function Dashboard() {
     const [counters, setCounters] = useState<Counter[]>([
         {
             id: 1,
-            label: "Twitter Followers",
+            label: "Hours",
             value: 0,
-            targetValue: 35,
+            targetValue: 24,
             isEditing: false,
             editingValue: "35",
-            icon: "Twitter",
+            icon: "Clock",
         },
     ]);
     const [resetTrigger, setResetTrigger] = useState(false);

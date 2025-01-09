@@ -1,5 +1,5 @@
 import React from 'react';
-import { Palette, Layout, FlagIcon as BorderAll, Layers, ImagesIcon as Icons, Type, Sparkles, ChevronRight, AlignLeft, AlignRight, AlignCenter, RefreshCw, Upload } from 'lucide-react';
+import { Palette, Layout, FlagIcon as BorderAll, Layers, ImagesIcon as Icons, Type, Sparkles, Clock, ChevronRight, AlignLeft, AlignRight, AlignCenter, RefreshCw, Upload } from 'lucide-react';
 import { Switch } from "@/components/ui/switch";
 
 interface SettingsPanelProps {
