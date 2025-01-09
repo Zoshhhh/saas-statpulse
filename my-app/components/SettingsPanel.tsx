@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { Palette, Layout, FlagIcon as BorderAll, Layers, ImagesIcon as Icons, Type, Sparkles, Clock, ChevronRight, AlignLeft, AlignRight, AlignCenter, RefreshCw, Upload } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { TypeIcon as type, type LucideIcon } from 'lucide-react';
+import { Palette, Layout, FlagIcon as BorderAll, Layers, ImagesIcon as Icons, Type, Sparkles, Clock, ChevronRight, AlignLeft, AlignRight, AlignCenter, RefreshCw, Download, Image, ImagePlus, Images, Camera, PictureInPictureIcon as Picture, ShoppingCart, Pencil, Star, Heart } from 'lucide-react';
 import { Switch } from "@/components/ui/switch";
 
 interface SettingsPanelProps {
@@ -142,11 +143,33 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
             console.error('Erreur lors de l\'upload :', error);
         }
     };
+
+    const updateFileName = (event: React.ChangeEvent<HTMLInputElement>, counterId: number) => {
+        const fileName = event.target.files?.[0]?.name || 'No file chosen';
+        const fileNameElement = document.getElementById(`file-name-${counterId}`);
+        if (fileNameElement) {
+            fileNameElement.textContent = fileName;
+        }
+    };
+
     const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>, cardId: number) => {
         const file = event.target.files?.[0];
         if (file) {
-            uploadCustomIcon(file, cardId);Ò
+            uploadCustomIcon(file, cardId);
+            updateFileName(event, cardId);
         }
+    };
+
+    const fileInputRefs = useRef<{ [key: number]: HTMLInputElement | null }>({});
+
+    type IconName = 'ShoppingCart' | 'Clock' | 'Pencil' | 'Star' | 'Heart';
+
+    const lucideIcons: Record<IconName, LucideIcon> = {
+        ShoppingCart,
+        Clock,
+        Pencil,
+        Star,
+        Heart
     };
 
     return (
@@ -447,40 +470,49 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                             </div>
                             {showIcon && (
                                 <>
-                                    <div className="grid grid-cols-5 gap-2 p-2 bg-white rounded-lg border border-gray-200">
-                                        {counters.map(({ id, icon }) => (
-                                            <button
-                                                key={id}
-                                                onClick={() => updateCounterIcon(id, icon)}
-                                                className={`p-2 rounded-lg transition-colors ${
-                                                    counters[counters.length - 1]?.icon === icon ? 'bg-blue-50 text-blue-500' : 'hover:bg-gray-100'
-                                                }`}
-                                            >
-                                                {typeof icon === 'string' && icon.startsWith('data:') ? (
-                                                    <img src={icon} alt="Custom icon" className="w-6 h-6" />
-                                                ) : (
-                                                    <Icons size={24} />
-                                                )}
-                                            </button>
-                                        ))}
+                                    <div className="grid grid-cols-5 gap-2 p-2 bg-white/50 rounded-lg border border-gray-100">
+                                        {['ShoppingCart', 'Clock', 'Pencil', 'Star', 'Heart'].map((iconName, index) => {
+                                            const IconComponent = lucideIcons[iconName as IconName];
+                                            return (
+                                                <button
+                                                    key={index}
+                                                    onClick={() => updateCounterIcon(counters[0].id, iconName)}
+                                                    className={`w-8 h-8 flex items-center justify-center rounded-lg transition-colors hover:bg-gray-50 ${
+                                                        counters[counters.length - 1]?.icon === iconName ? 'text-blue-500' : 'text-gray-500'
+                                                    }`}
+                                                >
+                                                    <IconComponent size={16} />
+                                                </button>
+                                            );
+                                        })}
                                     </div>
                                     <div className="space-y-2">
-                                        <label className="text-xs text-gray-500">Upload Custom Icon</label>
+                                        <label className="text-xs font-medium text-gray-700">Custom Icon</label>
                                         {counters.map((counter) => (
-                                            <div key={counter.id} className="mb-4">
-                                                <h3 className="text-sm font-medium text-gray-700">
-                                                    Upload Icon for Card {counter.id}
-                                                </h3>
+                                            <div key={counter.id} className="flex items-center space-x-2 mb-2">
+                                                <button
+                                                    onClick={() => fileInputRefs.current[counter.id]?.click()}
+                                                    className="px-2 py-1.5 text-sm bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center space-x-2"
+                                                >
+                                                    <Download size={16} />
+                                                    <span>Custom Icon</span>
+                                                </button>
                                                 <input
+                                                    ref={(el: HTMLInputElement | null) => {
+                                                        if (el) fileInputRefs.current[counter.id] = el;
+                                                    }}
                                                     type="file"
                                                     onChange={(e) => {
                                                         if (e.target.files?.[0]) {
-                                                            uploadCustomIcon(e.target.files[0], counter.id); // Associe l'upload à la carte
+                                                            uploadCustomIcon(e.target.files[0], counter.id);
                                                         }
                                                     }}
                                                     accept="image/*"
-                                                    className="text-sm text-gray-700"
+                                                    className="hidden"
                                                 />
+                                                <span className="text-sm text-gray-500" id={`file-name-${counter.id}`}>
+                                            No file chosen
+                                          </span>
                                             </div>
                                         ))}
                                     </div>
