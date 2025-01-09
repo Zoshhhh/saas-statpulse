@@ -49,7 +49,7 @@ export function Hero() {
                     <video
                         className="w-full h-full rounded-xl"
                         controls
-                        poster="/poster.png" 
+                        poster="/poster.png"
                     >
                         <source src="/demo.mp4" type="video/mp4" />
                         Your browser does not support the video tag.
