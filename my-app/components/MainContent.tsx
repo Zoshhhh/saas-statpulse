@@ -72,20 +72,56 @@ const MainContent: React.FC<MainContentProps> = ({
                                         style={getCardStyle()}
                                         className="w-full"
                                     >
-                                        <div className={`p-6 w-full h-full flex ${showIcon ? (iconPosition === 'left' ? 'flex-row' : 'flex-row-reverse') : ''} items-center justify-center`}>
+                                        <div
+                                            className={`p-6 w-full h-full flex ${
+                                                showIcon
+                                                    ? iconPosition === 'left'
+                                                        ? 'flex-row'
+                                                        : 'flex-row-reverse'
+                                                    : ''
+                                            } items-center justify-center`}
+                                        >
                                             {showIcon && (
-                                                <div style={getIconContainerStyle()} className="shrink-0">
-                                                    <IconComponent
-                                                        iconName={counter.icon}
-                                                        size={cardIconSize}
-                                                        color={cardIconColor}
-                                                    />
+                                                <div
+                                                    style={{
+                                                        ...getIconContainerStyle(),
+                                                        borderRadius: '50%',
+                                                        overflow: 'hidden', // Assure que l'image est contenue dans le cercle
+                                                        width: `${cardIconSize}px`,
+                                                        height: `${cardIconSize}px`,
+                                                    }}
+                                                    className="shrink-0"
+                                                >
+                                                    {counter.icon.startsWith('/uploads') ? (
+                                                        <img
+                                                            src={counter.icon}
+                                                            alt="Custom icon"
+                                                            style={{
+                                                                width: '100%',
+                                                                height: '100%',
+                                                                objectFit: 'cover', // Remplit le cercle
+                                                            }}
+                                                        />
+                                                    ) : (
+                                                        <IconComponent
+                                                            iconName={counter.icon}
+                                                            size={cardIconSize}
+                                                            color={cardIconColor}
+                                                        />
+                                                    )}
                                                 </div>
                                             )}
-                                            <div className={`flex-1 ${showIcon ? 'ml-4' : ''} text-${cardTextAlign}`}>
-                                                <div className={`font-bold mb-2`} style={{ fontSize: `${cardTextSize * 2}px` }}>
+                                            <div
+                                                className={`flex-1 ${
+                                                    showIcon ? 'ml-4' : ''
+                                                } text-${cardTextAlign}`}
+                                            >
+                                                <div
+                                                    className={`font-bold mb-2`}
+                                                    style={{ fontSize: `${cardTextSize * 2}px` }}
+                                                >
                                                     <NumberTicker
-                                                        key={resetTrigger ? "reset" : "normal"}
+                                                        key={resetTrigger ? 'reset' : 'normal'}
                                                         value={counter.value}
                                                     />
                                                 </div>
@@ -93,14 +129,21 @@ const MainContent: React.FC<MainContentProps> = ({
                                                     <input
                                                         type="text"
                                                         value={counter.label}
-                                                        onChange={(e) => updateCounterLabel(counter.id, e.target.value)}
+                                                        onChange={(e) =>
+                                                            updateCounterLabel(counter.id, e.target.value)
+                                                        }
                                                         onBlur={() => toggleEditMode(counter.id)}
                                                         className={`text-gray-600 w-full bg-transparent border-b border-gray-300 focus:outline-none focus:border-blue-500 text-${cardTextAlign}`}
                                                         style={{ fontSize: `${cardTextSize}px` }}
                                                         autoFocus
                                                     />
                                                 ) : (
-                                                    <h2 className="text-gray-600" style={{ fontSize: `${cardTextSize}px` }}>{counter.label}</h2>
+                                                    <h2
+                                                        className="text-gray-600"
+                                                        style={{ fontSize: `${cardTextSize}px` }}
+                                                    >
+                                                        {counter.label}
+                                                    </h2>
                                                 )}
                                             </div>
                                         </div>
@@ -115,20 +158,56 @@ const MainContent: React.FC<MainContentProps> = ({
                                     style={getCardStyle()}
                                     className="w-full"
                                 >
-                                    <div className={`p-6 w-full h-full flex ${showIcon ? (iconPosition === 'left' ? 'flex-row' : 'flex-row-reverse') : ''} items-center justify-center`}>
+                                    <div
+                                        className={`p-6 w-full h-full flex ${
+                                            showIcon
+                                                ? iconPosition === 'left'
+                                                    ? 'flex-row'
+                                                    : 'flex-row-reverse'
+                                                : ''
+                                        } items-center justify-center`}
+                                    >
                                         {showIcon && (
-                                            <div style={getIconContainerStyle()} className="shrink-0">
-                                                <IconComponent
-                                                    iconName={counter.icon}
-                                                    size={cardIconSize}
-                                                    color={cardIconColor}
-                                                />
+                                            <div
+                                                style={{
+                                                    ...getIconContainerStyle(),
+                                                    borderRadius: '50%',
+                                                    overflow: 'hidden', // Assure que l'image est contenue dans le cercle
+                                                    width: `${cardIconSize}px`,
+                                                    height: `${cardIconSize}px`,
+                                                }}
+                                                className="shrink-0"
+                                            >
+                                                {counter.icon.startsWith('/uploads') ? (
+                                                    <img
+                                                        src={counter.icon}
+                                                        alt="Custom icon"
+                                                        style={{
+                                                            width: '100%',
+                                                            height: '100%',
+                                                            objectFit: 'cover', // Remplit le cercle
+                                                        }}
+                                                    />
+                                                ) : (
+                                                    <IconComponent
+                                                        iconName={counter.icon}
+                                                        size={cardIconSize}
+                                                        color={cardIconColor}
+                                                    />
+                                                )}
                                             </div>
                                         )}
-                                        <div className={`flex-1 ${showIcon ? 'ml-4' : ''} text-${cardTextAlign}`}>
-                                            <div className={`font-bold mb-2`} style={{ fontSize: `${cardTextSize * 2}px` }}>
+                                        <div
+                                            className={`flex-1 ${
+                                                showIcon ? 'ml-4' : ''
+                                            } text-${cardTextAlign}`}
+                                        >
+                                            <div
+                                                className={`font-bold mb-2`}
+                                                style={{ fontSize: `${cardTextSize * 2}px` }}
+                                            >
                                                 <NumberTicker
-                                                    key={resetTrigger ? "reset" : "normal"}
+                                                    key={resetTrigger ? 'reset' : 'normal'}
                                                     value={counter.value}
                                                 />
                                             </div>
@@ -136,14 +215,21 @@ const MainContent: React.FC<MainContentProps> = ({
                                                 <input
                                                     type="text"
                                                     value={counter.label}
-                                                    onChange={(e) => updateCounterLabel(counter.id, e.target.value)}
+                                                    onChange={(e) =>
+                                                        updateCounterLabel(counter.id, e.target.value)
+                                                    }
                                                     onBlur={() => toggleEditMode(counter.id)}
                                                     className={`text-gray-600 w-full bg-transparent border-b border-gray-300 focus:outline-none focus:border-blue-500 text-${cardTextAlign}`}
                                                     style={{ fontSize: `${cardTextSize}px` }}
                                                     autoFocus
                                                 />
                                             ) : (
-                                                <h2 className="text-gray-600" style={{ fontSize: `${cardTextSize}px` }}>{counter.label}</h2>
+                                                <h2
+                                                    className="text-gray-600"
+                                                    style={{ fontSize: `${cardTextSize}px` }}
+                                                >
+                                                    {counter.label}
+                                                </h2>
                                             )}
                                         </div>
                                     </div>
@@ -163,4 +249,3 @@ const MainContent: React.FC<MainContentProps> = ({
 };
 
 export default MainContent;
-

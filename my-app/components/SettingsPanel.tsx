@@ -117,7 +117,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
 
     const [uploadedIconUrl, setUploadedIconUrl] = useState<string | null>(null);
 
-    const uploadCustomIcon = async (file: File) => {
+    const uploadCustomIcon = async (file: File, counterId: number) => {
         try {
             const formData = new FormData();
             formData.append('icon', file);
@@ -132,26 +132,20 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
             }
 
             const data = await response.json();
-            console.log('Réponse de l\'API :', data); // Ajoute ce log pour vérifier
+            console.log('Réponse de l\'API :', data);
 
-            // Récupérer l'URL du fichier uploadé
-            const fileUrl = data.url; // Assure-toi que la clé correspond à la structure de la réponse
-            console.log('URL de l\'icône uploadée :', fileUrl);
-
+            const fileUrl = data.url;
             if (fileUrl) {
-                setUploadedIconUrl(fileUrl); // Met à jour l'état
+                updateCounterIcon(counterId, fileUrl); // Met à jour l'icône de la carte
             }
         } catch (error) {
-            if (error instanceof Error) {
-                console.error('Erreur lors de l\'upload :', error.message);
-            } else {
-                console.error('Erreur inattendue :', error);
-            }
+            console.error('Erreur lors de l\'upload :', error);
         }
-    };    const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    };
+    const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>, cardId: number) => {
         const file = event.target.files?.[0];
         if (file) {
-            uploadCustomIcon(file);
+            uploadCustomIcon(file, cardId);Ò
         }
     };
 
@@ -453,50 +447,42 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                             </div>
                             {showIcon && (
                                 <>
-                                    <div
-                                        className="grid grid-cols-5 gap-2 p-2 bg-white rounded-lg border border-gray-200">
-                                        {counters.map(({id, icon}) => (
+                                    <div className="grid grid-cols-5 gap-2 p-2 bg-white rounded-lg border border-gray-200">
+                                        {counters.map(({ id, icon }) => (
                                             <button
                                                 key={id}
                                                 onClick={() => updateCounterIcon(id, icon)}
                                                 className={`p-2 rounded-lg transition-colors ${
-                                                    counters[counters.length - 1]?.icon === icon ? 'bg-blue-50 text-blue-500' : 'hover:bg-gray-100'}`}
+                                                    counters[counters.length - 1]?.icon === icon ? 'bg-blue-50 text-blue-500' : 'hover:bg-gray-100'
+                                                }`}
                                             >
                                                 {typeof icon === 'string' && icon.startsWith('data:') ? (
-                                                    <img src={icon} alt="Custom icon" className="w-6 h-6"/>
+                                                    <img src={icon} alt="Custom icon" className="w-6 h-6" />
                                                 ) : (
-                                                    <Icons size={24}/>
+                                                    <Icons size={24} />
                                                 )}
                                             </button>
                                         ))}
                                     </div>
                                     <div className="space-y-2">
                                         <label className="text-xs text-gray-500">Upload Custom Icon</label>
-                                        <div className="flex items-center justify-center w-full">
-                                            <label htmlFor="custom-icon-upload"
-                                                   className="flex flex-col items-center justify-center w-full h-24 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
-                                                <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                                    <Upload className="w-6 h-6 text-gray-400"/>
-                                                    <p className="mb-2 text-sm text-gray-500"><span
-                                                        className="font-semibold">Click to upload</span> or drag and
-                                                        drop</p>
-                                                    <p className="text-xs text-gray-500">SVG, PNG, JPG or GIF (MAX.
-                                                        800x400px)</p>
-                                                </div>
-                                                <input id="custom-icon-upload" type="file" className="hidden"
-                                                       onChange={handleFileUpload} accept="image/*"/>
-                                            </label>
-                                        </div>
-                                        {uploadedIconUrl && (
-                                            <div className="mt-4">
-                                                <h3 className="text-xs font-medium text-gray-500">Preview:</h3>
-                                                <img
-                                                    src={uploadedIconUrl}
-                                                    alt="Uploaded Icon"
-                                                    className="w-16 h-16 rounded-lg object-cover"
+                                        {counters.map((counter) => (
+                                            <div key={counter.id} className="mb-4">
+                                                <h3 className="text-sm font-medium text-gray-700">
+                                                    Upload Icon for Card {counter.id}
+                                                </h3>
+                                                <input
+                                                    type="file"
+                                                    onChange={(e) => {
+                                                        if (e.target.files?.[0]) {
+                                                            uploadCustomIcon(e.target.files[0], counter.id); // Associe l'upload à la carte
+                                                        }
+                                                    }}
+                                                    accept="image/*"
+                                                    className="text-sm text-gray-700"
                                                 />
                                             </div>
-                                        )}
+                                        ))}
                                     </div>
                                     <div className="space-y-2">
                                         <label className="text-xs text-gray-500">Icon Position</label>
@@ -505,13 +491,13 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                                                 onClick={() => setIconPosition('left')}
                                                 className={`flex-1 p-2 rounded-lg ${iconPosition === 'left' ? 'bg-blue-100' : 'bg-gray-200'}`}
                                             >
-                                                <AlignLeft size={18} className="mx-auto"/>
+                                                <AlignLeft size={18} className="mx-auto" />
                                             </button>
                                             <button
                                                 onClick={() => setIconPosition('right')}
                                                 className={`flex-1 p-2 rounded-lg ${iconPosition === 'right' ? 'bg-blue-100' : 'bg-gray-200'}`}
                                             >
-                                                <AlignRight size={18} className="mx-auto"/>
+                                                <AlignRight size={18} className="mx-auto" />
                                             </button>
                                         </div>
                                         <label className="text-xs text-gray-500">Size</label>
@@ -546,7 +532,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                         </div>
                     )}
                 </div>
-                <div className="h-px bg-gray-200 my-6"/>
+                <div className="h-px bg-gray-200 my-6" />
 
                 {/* Text Settings */}
                 <div className="space-y-3">
