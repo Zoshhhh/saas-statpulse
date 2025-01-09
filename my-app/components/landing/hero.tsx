@@ -26,11 +26,11 @@ export function Hero() {
                                 Start for free →
                             </Button>
                         </Link>
-                        <Link href="#demo">
+                        <a href="#video-demo">
                             <Button variant="outline" size="lg" className="font-medium px-8">
                                 See demo
                             </Button>
-                        </Link>
+                        </a>
                     </div>
                     <div className="grid gap-4 sm:grid-cols-2 max-w-2xl mx-auto">
                         {features.map((feature, index) => (
@@ -41,8 +41,11 @@ export function Hero() {
                         ))}
                     </div>
                 </div>
-                {/* Vidéo intégrée */}
-                <div className="w-full max-w-3xl aspect-video bg-gray-200 rounded-xl shadow-2xl overflow-hidden">
+                {/* Vidéo intégrée avec un id */}
+                <div
+                    id="video-demo"
+                    className="w-full max-w-3xl aspect-video bg-gray-200 rounded-xl shadow-2xl overflow-hidden"
+                >
                     <video
                         className="w-full h-full rounded-xl"
                         controls
