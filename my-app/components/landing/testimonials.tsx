@@ -3,7 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Twitter } from 'lucide-react'
 
-export function Testimonials(props: any) {
+export function Testimonials() {
     return (
         <div className="container px-4 md:px-6 py-12 max-w-6xl mx-auto">
             <h2 className="text-2xl font-bold text-center mb-4">Join Our Community</h2>

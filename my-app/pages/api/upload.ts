@@ -12,7 +12,7 @@ export const config = {
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === 'POST') {
         try {
-            const { fields, files } = await parseForm(req);
+            const { files } = await parseForm(req);
 
             // Vérifie si le fichier a été correctement uploadé
             const file = Array.isArray(files.icon) ? files.icon[0] : files.icon;
