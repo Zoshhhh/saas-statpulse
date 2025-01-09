@@ -41,12 +41,16 @@ export function Hero() {
                         ))}
                     </div>
                 </div>
-                <div className="w-full max-w-3xl aspect-video bg-gray-200 rounded-xl shadow-2xl">
-                    <div className="w-full h-full flex items-center justify-center">
-                        <Button variant="secondary" className="shadow-lg">
-                            Watch video
-                        </Button>
-                    </div>
+                {/* Vidéo intégrée */}
+                <div className="w-full max-w-3xl aspect-video bg-gray-200 rounded-xl shadow-2xl overflow-hidden">
+                    <video
+                        className="w-full h-full rounded-xl"
+                        controls
+                        poster="/poster.png" 
+                    >
+                        <source src="/demo.mp4" type="video/mp4" />
+                        Your browser does not support the video tag.
+                    </video>
                 </div>
             </div>
             <div className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80">
@@ -63,4 +67,3 @@ const features = [
     "Top-notch support",
     "Cancel anytime",
 ]
-
