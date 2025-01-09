@@ -505,7 +505,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                                             <input
                                                 type="range"
                                                 min="16"
-                                                max="64"
+                                                max="128"
                                                 value={cardIconSize}
                                                 onChange={(e) => setCardIconSize(parseInt(e.target.value, 10))}
                                                 className="flex-1"
