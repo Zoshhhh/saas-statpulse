@@ -282,9 +282,6 @@ export default function Dashboard() {
         <div className="min-h-screen bg-gray-100 text-black">
             <nav className="flex items-center justify-center px-6 py-4 bg-gray-100 border-b border-gray-300">
                 <div className="flex items-center space-x-4">
-                    <button className="px-4 py-2 bg-gray-200 rounded-lg text-sm hover:bg-gray-300 transition-colors">
-                        Remove Watermark
-                    </button>
                     <button
                         onClick={exportToGif}
                         disabled={isExporting}
