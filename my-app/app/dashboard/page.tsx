@@ -2,9 +2,6 @@
 
 import { useState, useEffect } from "react";
 import * as LucideIcons from "lucide-react";
-import { toPng } from 'html-to-image';
-import GIFEncoder from 'gifencoder';
-import { createCanvas, loadImage } from 'canvas';
 import LeftPanel from '@/components/LeftPanel';
 import MainContent from '@/components/MainContent';
 import SettingsPanel from '@/components/SettingsPanel';
@@ -66,7 +63,7 @@ export default function Dashboard() {
     const [cardIconColor, setCardIconColor] = useState("#FFFFFF");
     const [cardShadowColor, setCardShadowColor] = useState("#FFFFFF");
     const [cardShadowIntensity, setCardShadowIntensity] = useState(50);
-    const [cardIconBackgroundColor, setCardIconBackgroundColor] = useState('#8B5CF6'); // Violet color
+    const [cardIconBackgroundColor, setCardIconBackgroundColor] = useState('#8B5CF6');
     const [cardTextSize, setCardTextSize] = useState(21);
     const [cardTextAlign, setCardTextAlign] = useState<'left' | 'center' | 'right'>('center');
     const [cardBorderPosition, setCardBorderPosition] = useState<'inside' | 'outside'>('outside');
@@ -216,72 +213,22 @@ export default function Dashboard() {
     });
 
     const exportToGif = async () => {
-        setIsExporting(true);
-        const mainContent = document.querySelector('.main-content') as HTMLElement;
-        if (!mainContent) {
-            setIsExporting(false);
-            return;
-        }
-
-        try {
-            const width = mainContent.offsetWidth;
-            const height = mainContent.offsetHeight;
-            const encoder = new GIFEncoder(width, height);
-            encoder.start();
-            encoder.setRepeat(0);   // 0 for repeat, -1 for no-repeat
-            encoder.setDelay(500);  // frame delay in ms
-            encoder.setQuality(10); // image quality. 10 is default.
-
-            const canvas = createCanvas(width, height);
-            const ctx = canvas.getContext('2d');
-
-            for (let i = 0; i < 10; i++) {
-                const dataUrl = await toPng(mainContent);
-                const image = await loadImage(dataUrl);
-                ctx.drawImage(image, 0, 0, width, height);
-                encoder.addFrame(ctx as any);
-            }
-
-            encoder.finish();
-            const buffer = encoder.out.getData();
-            const blob = new Blob([buffer], { type: 'image/gif' });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = 'dashboard-export.gif';
-            link.click();
-        } catch (error) {
-            console.error('Error exporting to GIF:', error);
-        } finally {
-            setIsExporting(false);
-        }
+        console.log('GIF export functionality not implemented');
+        // Implement GIF export logic here
     };
 
     const exportToPng = async () => {
-        setIsExporting(true);
-        const mainContent = document.querySelector('.main-content') as HTMLElement;
-        if (!mainContent) {
-            setIsExporting(false);
-            return;
-        }
-
-        try {
-            const dataUrl = await toPng(mainContent);
-            const link = document.createElement('a');
-            link.href = dataUrl;
-            link.download = 'dashboard-export.png';
-            link.click();
-        } catch (error) {
-            console.error('Error exporting to PNG:', error);
-        } finally {
-            setIsExporting(false);
-        }
+        console.log('PNG export functionality not implemented');
+        // Implement PNG export logic here
     };
 
     return (
         <div className="min-h-screen bg-gray-100 text-black">
             <nav className="flex items-center justify-center px-6 py-4 bg-gray-100 border-b border-gray-300">
                 <div className="flex items-center space-x-4">
+                    <button className="px-4 py-2 bg-gray-200 rounded-lg text-sm hover:bg-gray-300 transition-colors">
+                        Remove Watermark
+                    </button>
                     <button
                         onClick={exportToGif}
                         disabled={isExporting}
