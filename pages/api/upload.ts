@@ -1,16 +1,16 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import formidable, { Fields, Files } from 'formidable';
-import path from 'path';
-import fs from 'fs';
+import { NextApiRequest, NextApiResponse } from "next";
+import formidable, { Fields, Files } from "formidable";
+import path from "path";
+import fs from "fs";
 
 export const config = {
     api: {
-        bodyParser: false, // Désactive le bodyParser pour gérer les fichiers via formidable
+        bodyParser: false, // Désactive le bodyParser pour permettre à formidable de gérer les fichiers
     },
 };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    if (req.method === 'POST') {
+    if (req.method === "POST") {
         try {
             const { files } = await parseForm(req);
 
@@ -21,29 +21,37 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 return res.status(400).json({ error: "Aucun fichier n'a été uploadé." });
             }
 
-            // Construire l'URL publique pour le fichier
+            // Valide le type MIME du fichier
+            const allowedMimeTypes = ["image/jpeg", "image/png", "image/gif", "image/svg+xml"];
+            if (!allowedMimeTypes.includes(file.mimetype || "")) {
+                return res.status(400).json({ error: "Type de fichier non supporté." });
+            }
+
+            // Génère une URL publique pour le fichier
             const publicUrl = `/uploads/${path.basename(file.filepath)}`;
-            console.log('Fichier uploadé avec succès :', publicUrl);
+            console.log("Fichier uploadé avec succès :", publicUrl);
 
             res.status(200).json({
-                message: 'Fichier uploadé avec succès !',
+                message: "Fichier uploadé avec succès !",
                 url: publicUrl,
             });
         } catch (err) {
-            console.error('Erreur lors de l\'upload :', err);
-            res.status(500).json({ error: 'Erreur lors de l\'upload.' });
+            console.error("Erreur lors de l'upload :", err);
+            res.status(500).json({ error: "Erreur lors de l'upload." });
         }
     } else {
-        res.setHeader('Allow', ['POST']);
-        res.status(405).json({ error: 'Méthode non autorisée' });
+        res.setHeader("Allow", ["POST"]);
+        res.status(405).json({ error: "Méthode non autorisée" });
     }
 }
 
 /**
- * Utilitaire pour parser la requête avec formidable
+ * Utilitaire pour parser la requête avec formidable.
+ * @param req - Requête Next.js
+ * @returns Promise contenant les champs et fichiers parsés
  */
 function parseForm(req: NextApiRequest): Promise<{ fields: Fields; files: Files }> {
-    const uploadDir = path.join(process.cwd(), 'public/uploads');
+    const uploadDir = path.join(process.cwd(), "public/uploads");
 
     // Assure-toi que le dossier existe
     if (!fs.existsSync(uploadDir)) {
