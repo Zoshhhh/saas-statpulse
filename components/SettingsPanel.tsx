@@ -139,30 +139,18 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
   const isSettingExpanded = (setting: string) =>
     expandedSettings.includes(setting);
 
-  const uploadCustomIcon = async (file: File, counterId: number) => {
-    try {
-      const formData = new FormData();
-      formData.append("icon", file);
-
-      const response = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error("Échec de l'upload du fichier sur le serveur.");
-      }
-
-      const data = await response.json();
-      console.log("Réponse de l'API :", data);
-
-      const fileUrl = data.url;
+  const uploadCustomIcon = (file: File, counterId: number) => {
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const fileUrl = event.target?.result as string;
       if (fileUrl) {
-        updateCounterIcon(counterId, fileUrl); // Met à jour l'icône de la carte
+        updateCounterIcon(counterId, fileUrl); 
       }
-    } catch (error) {
-      console.error("Erreur lors de l'upload :", error);
-    }
+    };
+    reader.onerror = (error) => {
+      console.error("Erreur lors de la lecture du fichier :", error);
+    };
+    reader.readAsDataURL(file);
   };
 
   const fileInputRefs = useRef<{ [key: number]: HTMLInputElement | null }>({});
@@ -432,6 +420,16 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                   Outside
                 </button>
               </div>
+              <button
+                  onClick={() => setCardBorderPosition("inside")}
+                  className={`flex-1 p-2 rounded-lg ${
+                    cardBorderPosition === "inside"
+                      ? "bg-blue-100"
+                      : "bg-gray-200"
+                  }`}
+                >
+                  Inside
+                </button>
             </div>
           )}
         </div>
