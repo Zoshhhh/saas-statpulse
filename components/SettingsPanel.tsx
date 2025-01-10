@@ -438,12 +438,6 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                   onCheckedChange={setUseRainbowBorder}
                   id="use-rainbow-border"
                 />
-                <label
-                  htmlFor="use-rainbow-border"
-                  className="text-sm text-gray-700"
-                >
-                  Use Rainbow Border
-                </label>
               </div>
             </div>
           )}
