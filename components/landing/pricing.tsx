@@ -4,7 +4,7 @@ import { CheckCircle, X } from 'lucide-react'
 
 export function Pricing() {
     return (
-        <div className="container px-4 md:px-6 py-12 max-w-6xl mx-auto">
+        <div id="pricing-section" className="container px-4 md:px-6 py-12 max-w-6xl mx-auto">
             <h2 className="text-3xl font-bold text-center mb-8">Powerful features, simple pricing</h2>
             <p className="text-xl text-center text-muted-foreground mb-12">Choose the plan that fits your screenshot needs</p>
             <div className="grid gap-8 md:grid-cols-3 mx-auto">
@@ -37,7 +37,6 @@ export function Pricing() {
         </div>
     )
 }
-
 const pricingPlans = [
     {
         name: 'Basic',
