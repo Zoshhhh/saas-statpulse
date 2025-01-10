@@ -1,5 +1,14 @@
-import React from 'react';
-import { Plus, Search, ImageIcon, BarChart3, Edit2, Trash2, Clock, ChevronRight } from 'lucide-react';
+import React from "react";
+import {
+    Plus,
+    Search,
+    ImageIcon,
+    BarChart3,
+    Edit2,
+    Trash2,
+    Clock,
+    ChevronRight,
+} from "lucide-react";
 
 interface Counter {
     id: number;
@@ -37,6 +46,7 @@ const LeftPanel: React.FC<LeftPanelProps> = ({
     return (
         <div className="w-80 bg-gray-50 h-[calc(100vh-64px)] p-4 border-r border-gray-200 overflow-y-auto">
             <div className="space-y-6">
+                {/* Search */}
                 <div className="relative">
                     <input
                         type="text"
@@ -47,8 +57,12 @@ const LeftPanel: React.FC<LeftPanelProps> = ({
                     />
                     <Search className="absolute right-3 top-2.5 text-gray-400" size={18} />
                 </div>
+
+                {/* Actions */}
                 <div className="space-y-2">
-                    <h3 className="font-semibold text-gray-600 text-sm uppercase tracking-wider">Actions</h3>
+                    <h3 className="font-semibold text-gray-600 text-sm uppercase tracking-wider">
+                        Actions
+                    </h3>
                     <button
                         onClick={addCounter}
                         className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg text-sm hover:bg-blue-600 transition-colors flex items-center justify-center space-x-2 shadow-sm"
@@ -73,16 +87,29 @@ const LeftPanel: React.FC<LeftPanelProps> = ({
                         <Clock className="absolute right-2 text-blue-500" size={14} />
                     </button>
                 </div>
+
+                {/* Elements */}
                 <div className="space-y-3">
-                    <h3 className="font-semibold text-gray-600 text-sm uppercase tracking-wider">Elements</h3>
+                    <h3 className="font-semibold text-gray-600 text-sm uppercase tracking-wider">
+                        Elements
+                    </h3>
                     {counters.map((counter) => (
-                        <div key={counter.id} className="bg-white p-4 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition duration-200">
+                        <div
+                            key={counter.id}
+                            className="bg-white p-4 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition duration-200"
+                        >
                             <div className="flex items-center justify-between mb-3">
                                 <div className="flex items-center space-x-3">
                                     <div className="p-2 bg-blue-100 rounded-full">
-                                        <IconComponent iconName={counter.icon} size={18} color={cardIconColor} />
+                                        <IconComponent
+                                            iconName={counter.icon}
+                                            size={18}
+                                            color={cardIconColor}
+                                        />
                                     </div>
-                                    <span className="font-medium text-gray-800">{counter.label}</span>
+                                    <span className="font-medium text-gray-800 truncate max-w-[160px]">
+                                        {counter.label}
+                                    </span>
                                 </div>
                                 <div className="flex items-center space-x-2">
                                     <button
@@ -103,7 +130,9 @@ const LeftPanel: React.FC<LeftPanelProps> = ({
                                 <input
                                     type="number"
                                     value={counter.targetValue}
-                                    onChange={(e) => updateCounterValue(counter.id, e.target.value)}
+                                    onChange={(e) =>
+                                        updateCounterValue(counter.id, e.target.value)
+                                    }
                                     className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
                                     placeholder="Enter value"
                                 />
@@ -118,4 +147,3 @@ const LeftPanel: React.FC<LeftPanelProps> = ({
 };
 
 export default LeftPanel;
-
