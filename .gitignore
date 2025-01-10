@@ -39,9 +39,3 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
-# user uploads
-/public/uploads/icons/*
-/public/icons/*
-/uploads/icons/*
-/public/uploads/*
