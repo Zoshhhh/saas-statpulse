@@ -1,4 +1,14 @@
-export interface BackgroundSettingsProps {
+import { type LucideIcon } from 'lucide-react';
+
+export interface SettingsSectionProps {
+    icon: LucideIcon;
+    title: string;
+    isExpanded: boolean;
+    onToggle: () => void;
+    children: React.ReactNode;
+}
+
+export interface SettingsPanelProps {
     backgroundType: "gradient" | "solid";
     setBackgroundType: (type: "gradient" | "solid") => void;
     solidColor: string;
@@ -12,20 +22,10 @@ export interface BackgroundSettingsProps {
     setMainContentHeight: (height: number) => void;
     mainContentBorderRadius: number;
     setMainContentBorderRadius: (radius: number) => void;
-    isExpanded: boolean;
-    toggleExpansion: () => void;
-}
-
-export interface CardSettingsProps {
     cardWidth: number;
     setCardWidth: (width: number) => void;
     cardHeight: number;
     setCardHeight: (height: number) => void;
-    isExpanded: boolean;
-    toggleExpansion: () => void;
-}
-
-export interface BorderSettingsProps {
     cardBorderColor: string;
     setCardBorderColor: (color: string) => void;
     cardBorderWidth: number;
@@ -36,20 +36,10 @@ export interface BorderSettingsProps {
     setCardBorderPosition: (position: "inside" | "outside") => void;
     useRainbowBorder: boolean;
     setUseRainbowBorder: (use: boolean) => void;
-    isExpanded: boolean;
-    toggleExpansion: () => void;
-}
-
-export interface ShadowSettingsProps {
     cardShadowColor: string;
     setCardShadowColor: (color: string) => void;
     cardShadowIntensity: number;
     setCardShadowIntensity: (intensity: number) => void;
-    isExpanded: boolean;
-    toggleExpansion: () => void;
-}
-
-export interface IconSettingsProps {
     showIcon: boolean;
     setShowIcon: (show: boolean) => void;
     iconPosition: "left" | "right";
@@ -60,30 +50,15 @@ export interface IconSettingsProps {
     setCardIconColor: (color: string) => void;
     cardIconBackgroundColor: string;
     setCardIconBackgroundColor: (color: string) => void;
-    isExpanded: boolean;
-    toggleExpansion: () => void;
-}
-
-export interface TextSettingsProps {
     cardTextSize: number;
     setCardTextSize: (size: number) => void;
     cardTextAlign: "left" | "center" | "right";
     setCardTextAlign: (align: "left" | "center" | "right") => void;
-    isExpanded: boolean;
-    toggleExpansion: () => void;
-}
-
-export interface AnimationSettingsProps {
     resetAnimation: () => void;
-    isExpanded: boolean;
-    toggleExpansion: () => void;
+    updateCounterIcon: (id: number, iconName: string) => void;
+    counters: Array<{
+        id: number;
+        icon: string;
+    }>;
 }
 
-export interface SettingsPanelProps
-    extends BackgroundSettingsProps,
-        CardSettingsProps,
-        BorderSettingsProps,
-        ShadowSettingsProps,
-        IconSettingsProps,
-        TextSettingsProps,
-        AnimationSettingsProps {}

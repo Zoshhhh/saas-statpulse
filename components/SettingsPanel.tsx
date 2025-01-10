@@ -432,19 +432,6 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                   Outside
                 </button>
               </div>
-              <div className="flex items-center space-x-2">
-                <Switch
-                  checked={useRainbowBorder}
-                  onCheckedChange={setUseRainbowBorder}
-                  id="use-rainbow-border"
-                />
-                <label
-                  htmlFor="use-rainbow-border"
-                  className="text-sm text-gray-700"
-                >
-                  Use Rainbow Border
-                </label>
-              </div>
             </div>
           )}
         </div>
