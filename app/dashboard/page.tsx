@@ -1,8 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import * as LucideIcons from "lucide-react";
-import LeftPanel from "@/components/LeftPanel/LeftPanel";
-import MainContent from "@/components/MainContent";
+import LeftPanel from "@/components/dashboard/LeftPanel/LeftPanel";
+import MainContent from "@/components/dashboard/MainContent /MainContent";
 import SettingsPanel from "@/components/SettingsPanel";
 import { Clock } from "lucide-react";
 import html2canvas from "html2canvas";
