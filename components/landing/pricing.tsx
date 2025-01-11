@@ -1,90 +1,107 @@
+"use client"
+
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { CheckCircle, X } from 'lucide-react'
+import { Card, CardContent } from "@/components/ui/card"
+import { CheckCircle } from 'lucide-react'
+import Image from 'next/image'
 
 export function Pricing() {
     return (
-        <div id="pricing-section" className="container px-4 md:px-6 py-12 max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-8">Powerful features, simple pricing</h2>
-            <p className="text-xl text-center text-muted-foreground mb-12">Choose the plan that fits your screenshot needs</p>
-            <div className="grid gap-8 md:grid-cols-3 mx-auto">
-                {pricingPlans.map((plan, index) => (
-                    <Card key={index} className={plan.name === 'Pro' ? 'border-primary' : ''}>
-                        <CardHeader>
-                            <CardTitle className="text-2xl">{plan.name}</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <p className="text-4xl font-bold mb-6">${plan.price}<span className="text-xl text-muted-foreground">/life time</span></p>
-                            <ul className="space-y-2 mb-6">
-                                {plan.features.map((feature, featureIndex) => (
-                                    <li key={featureIndex} className="flex items-center">
-                                        {feature.included ? (
-                                            <CheckCircle className="h-5 w-5 text-primary mr-2" />
-                                        ) : (
-                                            <X className="h-5 w-5 text-muted-foreground mr-2" />
-                                        )}
-                                        <span className="text-sm">{feature.text}</span>
-                                    </li>
-                                ))}
+        <div className="container px-4 md:px-6 py-12 mx-auto">
+            <div className="grid gap-8 lg:grid-cols-3 lg:gap-10">
+                {/* Twitter-like Testimonial Card */}
+                <Card className="bg-white border border-gray-200 p-6 rounded-xl shadow-sm">
+                    <CardContent className="p-0 space-y-4">
+                        <div className="flex items-center gap-3">
+                            <Image
+                                src="/icon.png"
+                                alt="kevinweb3 avatar"
+                                width={48}
+                                height={48}
+                                className="rounded-full"
+                                priority
+                            />
+                            <div>
+                                <p className="font-bold">kevinweb3</p>
+                                <p className="text-sm text-gray-500">@kevinweb3</p>
+                            </div>
+                        </div>
+                        <p className="text-lg">
+                            🚀 we're getting closer to the launch of StatPulse!
+                            Exciting news: it will be free for the first week.
+
+                            Get ready to turn your data into stunning visuals.
+                        </p>
+                        <div className="flex items-center text-gray-500 text-sm">
+                            <span>2:50 PM · Jan 10, 2025</span>
+                        </div>
+                    </CardContent>
+                </Card>
+
+                {/* Features Section */}
+                <div className="space-y-6">
+                    <h2 className="text-2xl font-bold text-purple-800">Auto-generate Beautiful Screenshots</h2>
+                    <p className="text-gray-600">
+                        Save hours of effort by automating the creation of your screenshots and mockups from templates.
+                    </p>
+                    <p className="text-gray-600">
+                        Statpulse turns your code into beautiful screenshots with just a few clicks, perfect for documentation and social media.
+                    </p>
+                    <div className="grid grid-cols-2 gap-4 mt-6">
+                        <div className="bg-purple-100 p-6 rounded-xl text-center transition-all duration-300 hover:bg-purple-200 hover:shadow-md">
+                            <div className="text-3xl mb-2">🎨</div>
+                            <h3 className="text-sm font-medium text-purple-800">Custom Templates</h3>
+                        </div>
+                        <div className="bg-purple-100 p-6 rounded-xl text-center transition-all duration-300 hover:bg-purple-200 hover:shadow-md">
+                            <div className="text-3xl mb-2">⚡️</div>
+                            <h3 className="text-sm font-medium text-purple-800">Auto Generation</h3>
+                        </div>
+                        <div className="bg-purple-100 p-6 rounded-xl text-center transition-all duration-300 hover:bg-purple-200 hover:shadow-md">
+                            <div className="text-3xl mb-2">🖼️</div>
+                            <h3 className="text-sm font-medium text-purple-800">Customizable Frames</h3>
+                        </div>
+                        <div className="bg-purple-100 p-6 rounded-xl text-center transition-all duration-300 hover:bg-purple-200 hover:shadow-md">
+                            <div className="text-3xl mb-2">🎭</div>
+                            <h3 className="text-sm font-medium text-purple-800">Multiple Themes</h3>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Pricing Card */}
+                <Card className="bg-gradient-to-br from-purple-100 to-purple-200 border-0">
+                    <CardContent className="p-6">
+                        <div className="inline-block bg-purple-800 text-white text-sm px-3 py-1 rounded-full mb-6">
+                            Limited Time Offer
+                        </div>
+                        <h3 className="text-2xl font-bold mb-2 text-purple-900">Get lifetime access for only</h3>
+                        <div className="text-5xl font-bold mb-6 text-purple-800">$9</div>
+                        <ul className="space-y-4 mb-6">
+                            <li className="flex items-center gap-2">
+                                <CheckCircle className="h-5 w-5 text-purple-600" />
+                                <span>Unlimited screenshot generation</span>
+                            </li>
+                            <li className="flex items-center gap-2">
+                                <CheckCircle className="h-5 w-5 text-purple-600" />
+                                <span>All premium features included:</span>
+                            </li>
+                            <ul className="pl-7 space-y-2 mb-2">
+                                <li className="text-sm">• GIF export</li>
+                                <li className="text-sm">• Custom backgrounds</li>
+                                <li className="text-sm">• Advanced settings</li>
+                                <li className="text-sm">• Priority support</li>
                             </ul>
-                            <Button className={`w-full ${plan.name === 'Pro' ? 'bg-primary text-primary-foreground' : ''}`}>
-                                {plan.name === 'Pro' ? 'Start free trial' : 'Get started'}
-                            </Button>
-                        </CardContent>
-                    </Card>
-                ))}
+                            <li className="flex items-center gap-2">
+                                <CheckCircle className="h-5 w-5 text-purple-600" />
+                                <span>Early access to new features</span>
+                            </li>
+                        </ul>
+                        <Button className="w-full bg-purple-800 text-white hover:bg-purple-900">
+                            Get Early Access →
+                        </Button>
+                    </CardContent>
+                </Card>
             </div>
         </div>
     )
 }
-const pricingPlans = [
-    {
-        name: 'Basic',
-        price: 4,
-        features: [
-            { text: 'Up to 800x300px screenshots', included: true },
-            { text: 'Solid background', included: true },
-            { text: 'Basic border settings', included: true },
-            { text: 'Simple shadow effects', included: true },
-            { text: 'Text customization', included: true },
-            { text: 'PNG export', included: true },
-            { text: 'Gradient backgrounds', included: false },
-            { text: 'Custom icon upload', included: false },
-            { text: 'GIF export', included: false },
-            { text: 'Remove watermark', included: false },
-        ]
-    },
-    {
-        name: 'Pro',
-        price: 9,
-        features: [
-            { text: 'Everything in Basic', included: true },
-            { text: 'Unlimited screenshot size', included: true },
-            { text: 'Gradient & preset backgrounds', included: true },
-            { text: 'Advanced border settings', included: true },
-            { text: 'Custom icon upload', included: true },
-            { text: 'GIF export', included: true },
-            { text: 'Remove watermark', included: true },
-            { text: 'Add counters and pools', included: true },
-            { text: 'Priority support', included: true },
-            { text: 'API access', included: false },
-        ]
-    },
-    {
-        name: 'Enterprise',
-        price: 49,
-        features: [
-            { text: 'Everything in Pro', included: true },
-            { text: 'Unlimited team members', included: true },
-            { text: 'Advanced animation settings', included: true },
-            { text: 'Custom templates', included: true },
-            { text: 'API access', included: true },
-            { text: 'Dedicated account manager', included: true },
-            { text: 'Custom integrations', included: true },
-            { text: 'SLA', included: true },
-            { text: 'On-premise deployment', included: true },
-            { text: 'Brand customization', included: true },
-        ]
-    }
-]
 
