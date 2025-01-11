@@ -70,7 +70,7 @@ const CounterCard: React.FC<CounterCardProps> = ({
                 alt="Custom icon"
                 width={cardIconSize}
                 height={cardIconSize}
-                style={{ objectFit: "cover", borderRadius: "50%", width: "74px", height: "74px" }}
+                style={{ objectFit: "cover", borderRadius: "50%", width: "100%", height: "100%" }}
               />
             ) : (
               <IconComponent
