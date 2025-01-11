@@ -27,7 +27,7 @@ export function Pricing() {
                             </div>
                         </div>
                         <p className="text-lg">
-                            🚀 we're getting closer to the launch of StatPulse!
+                            🚀 we&apos;re getting closer to the launch of StatPulse!
                             Exciting news: it will be free for the first week.
 
                             Get ready to turn your data into stunning visuals.
