@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import {
     NavigationMenu,
@@ -20,7 +21,13 @@ export function Navigation() {
                 <div className="flex h-16 items-center justify-between px-6">
                     {/* Logo */}
                     <Link href="/" className="flex items-center space-x-2">
-                        <div className="h-8 w-8 rounded-full bg-purple-600"></div>
+                        <Image
+                            src="/logo_purple.png"
+                            alt="Statpulse Logo"
+                            width={32}
+                            height={32}
+                            className="rounded-full"
+                        />
                         <span className="font-bold text-xl text-purple-800">Statpulse</span>
                     </Link>
 
