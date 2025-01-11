@@ -249,14 +249,16 @@ export default function Dashboard() {
   };
 
   const exportToPng = async () => {
-    const element = document.querySelector(".main-content");
+    const element = document.querySelector(".main-content") as HTMLElement;
     if (element) {
-      const canvas = await html2canvas(element as HTMLElement);
+      element.style.borderRadius = "0";
+      const canvas = await html2canvas(element, { scale: 2 });
       const data = canvas.toDataURL("image/png");
       const link = document.createElement("a");
       link.href = data;
       link.download = "counters.png";
       link.click();
+      element.style.borderRadius = "20px";
     }
   };
 
