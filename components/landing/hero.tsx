@@ -66,8 +66,10 @@ export function Hero() {
 }
 
 const features = [
-    "20+ Screenshot API and Editor templates",
-    "Zapier and other integrations",
-    "SDKs for Node.js, Python, PHP, and Ruby",
-    "Top-notch support",
+    "Export GIF",
+    "Add Counter",
+    "Add Screenshot",
+    "Add Pool",
+    "Background Settings",
+    "Icon Customs"
 ];
