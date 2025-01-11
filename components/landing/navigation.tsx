@@ -15,32 +15,34 @@ import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs"
 
 export function Navigation() {
     return (
-        <div className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-            <nav className="container mx-auto px-4">
-                <div className="flex h-16 items-center justify-between">
+        <div className="flex justify-center w-full py-4">
+            <nav className="rounded-full bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 shadow-lg mx-4 my-2 w-full max-w-6xl z-50">
+                <div className="flex h-16 items-center justify-between px-6">
                     {/* Logo */}
                     <Link href="/" className="flex items-center space-x-2">
-                        <div className="h-8 w-8 rounded-full bg-primary"></div>
-                        <span className="font-bold text-xl">Statpulse</span>
+                        <div className="h-8 w-8 rounded-full bg-purple-600"></div>
+                        <span className="font-bold text-xl text-purple-800">Statpulse</span>
                     </Link>
 
                     {/* Navigation Menu */}
-                    <NavigationMenu>
+                    <NavigationMenu className="z-50">
                         <NavigationMenuList>
                             {/* Products Dropdown */}
                             <NavigationMenuItem>
-                                <NavigationMenuTrigger>Products</NavigationMenuTrigger>
+                                <NavigationMenuTrigger className="text-purple-800 hover:text-purple-600">
+                                    Products
+                                </NavigationMenuTrigger>
                                 <NavigationMenuContent>
-                                    <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-                                        <li className="row-span-3">
+                                    <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px]">
+                                        <li className="col-span-2">
                                             <Link
                                                 href="#"
-                                                className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-primary/20 to-primary/5 p-6 no-underline outline-none focus:shadow-md"
+                                                className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-br from-purple-100 to-purple-50 p-6 no-underline outline-none focus:shadow-md"
                                             >
-                                                <div className="mb-2 mt-4 text-lg font-medium">
+                                                <div className="mb-2 mt-4 text-lg font-medium text-purple-800">
                                                     Statpulse Screenshot Generator
                                                 </div>
-                                                <p className="text-sm leading-tight text-muted-foreground">
+                                                <p className="text-sm leading-tight text-purple-600">
                                                     Effortlessly create stunning screenshots for your SaaS projects with Statpulse.
                                                 </p>
                                             </Link>
@@ -57,9 +59,9 @@ export function Navigation() {
 
                             {/* Pricing */}
                             <NavigationMenuItem>
-                                <a href="#pricing-section" className={navigationMenuTriggerStyle()}>
+                                <Link href="#pricing-section" className={navigationMenuTriggerStyle()}>
                                     Pricing
-                                </a>
+                                </Link>
                             </NavigationMenuItem>
 
                             {/* Resources - Disabled */}
@@ -67,7 +69,7 @@ export function Navigation() {
                                 <span
                                     className={cn(
                                         navigationMenuTriggerStyle(),
-                                        "cursor-not-allowed text-muted-foreground"
+                                        "cursor-not-allowed text-purple-300"
                                     )}
                                     title="Coming Soon"
                                 >
@@ -81,17 +83,20 @@ export function Navigation() {
                     <div className="flex items-center space-x-4">
                         <SignedOut>
                             <SignInButton mode="modal">
-                                <Button variant="ghost" size="sm">
+                                <Button variant="ghost" size="sm" className="text-purple-800 hover:text-purple-600">
                                     Login
                                 </Button>
                             </SignInButton>
-                        </SignedOut>
-                        <SignedOut>
                             <SignInButton mode="modal">
-                                <Button size="sm">Early Access</Button>
+                                <Button size="sm" className="bg-purple-600 hover:bg-purple-700 text-white">
+                                    Early Access
+                                </Button>
                             </SignInButton>
                         </SignedOut>
                         <SignedIn>
+                            <Link href="/dashboard" className="text-purple-800 hover:text-purple-600 font-medium mr-4">
+                                Dashboard
+                            </Link>
                             <UserButton />
                         </SignedIn>
                     </div>
@@ -110,13 +115,13 @@ const ListItem = React.forwardRef<
             <a
                 ref={ref}
                 className={cn(
-                    "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+                    "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-purple-50 hover:text-purple-800 focus:bg-purple-50 focus:text-purple-800",
                     className
                 )}
                 {...props}
             >
-                <div className="text-sm font-medium leading-none">{title}</div>
-                <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                <div className="text-sm font-medium leading-none text-purple-800">{title}</div>
+                <p className="line-clamp-2 text-sm leading-snug text-purple-600">
                     {children}
                 </p>
             </a>
@@ -127,6 +132,7 @@ ListItem.displayName = "ListItem"
 
 function navigationMenuTriggerStyle() {
     return cn(
-        "group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50"
+        "group inline-flex h-10 w-max items-center justify-center rounded-md bg-white px-4 py-2 text-sm font-medium transition-colors hover:bg-purple-50 hover:text-purple-800 focus:bg-purple-50 focus:text-purple-800 focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-purple-100/50 data-[state=open]:bg-purple-100/50 text-purple-800"
     )
 }
+
