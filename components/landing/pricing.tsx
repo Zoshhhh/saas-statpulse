@@ -22,7 +22,7 @@ export function Pricing() {
                                 priority
                             />
                             <div>
-                                <p className="font-bold">kevinweb3</p>
+                                <p className="font-bold">zoshhhh</p>
                                 <p className="text-sm text-gray-500">@kevinweb3</p>
                             </div>
                         </div>
