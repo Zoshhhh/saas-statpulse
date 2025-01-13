@@ -2,6 +2,8 @@ import { Navigation } from "@/components/landing/navigation";
 import { Hero } from "@/components/landing/hero";
 import { Testimonials } from "@/components/landing/testimonials";
 import { Pricing } from "@/components/landing/pricing";
+import { Roadmap } from "@/components/landing/roadmap";
+
 
 export default function Home() {
   return (
@@ -12,6 +14,7 @@ export default function Home() {
       <div className="w-full max-w-6xl mx-auto">
         <Hero />
         <Testimonials />
+          <Roadmap />
         <Pricing />
       </div>
     </main>
