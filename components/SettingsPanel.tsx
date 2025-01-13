@@ -683,14 +683,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                 >
                   <AlignCenter size={18} className="mx-auto" />
                 </button>
-                <button
-                  onClick={() => setCardTextAlign("right")}
-                  className={`flex-1 p-2 rounded-lg ${
-                    cardTextAlign === "right" ? "bg-blue-100" : "bg-gray-200"
-                  }`}
-                >
-                  <AlignRight size={18} className="mx-auto" />
-                </button>
+
               </div>
             </div>
           )}
