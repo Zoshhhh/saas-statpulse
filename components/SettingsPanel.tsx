@@ -420,16 +420,6 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
                   Outside
                 </button>
               </div>
-              <button
-                  onClick={() => setCardBorderPosition("inside")}
-                  className={`flex-1 p-2 rounded-lg ${
-                    cardBorderPosition === "inside"
-                      ? "bg-blue-100"
-                      : "bg-gray-200"
-                  }`}
-                >
-                  Inside
-                </button>
             </div>
           )}
         </div>
